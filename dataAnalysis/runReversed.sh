@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+function run {
+    python loopReversed.py $1 &
+}
+
+run 20160705_Reversed_33umAl_D1_0kV_D2_2kV_E1_2kV_E2_2kV
+run 20160709_33umAl_Reversed_D1_0kV_D1.5_3kV_E1_3V_E2_3kV
+run 20160709_33umAl_Reversed_D1_0kV_D2_3kV_E1_3V_E2_3kV
+run 20160707_33umAl_Reversed_D1_0kV_D3_3kV_E1_2V_E2_3kV
+run 20160709_33umAl_Reversed_D1_0kV_D2_2kV_E1_3V_E2_3kV
+run 20160711_33umAl_Reversed_D1_0kV_D2_2kV_E1_3V_E2_3kV
+run 20160707_33umAl_Reversed_D1_0kV_D3_3kV_E1_4V_E2_3kV
+run 20160709_33umAl_Reversed_D1_0kV_D2_3kV_E1_0V_E2_3kV 
