@@ -9,7 +9,8 @@ uncleanedHisto=TH2D("","",256,0,256,256,0,256)
 
 tmp=TH1D("","",40000,0,400000)
 #name of f /home/helga/testbeamNewCleaning/sortedData/46um/bending6000/20151004_46umDeg_all3000V/01_20151004_135756/test27_datadriven_AD/histograms14.root
-filename="/home/helga/sortedData/46um/bending6000/20151004_46umDeg_all3000V/01_20151004_135756/test27_datadriven_AD/data_14.dat"
+#filename="/home/helga/sortedData/46um/bending6000/20151004_46umDeg_all3000V/01_20151004_135756/test27_datadriven_AD/data_14.dat"
+filename="../../../data/illustrations/data_14.dat"
 #for line in open("../sortedData/46um/bending6000/20151003_46umDeg_all3000V/00_20151003_171600/test27_datadriven_AD/data_2.dat"):
 for line in open(filename):
     columns=line.split()
@@ -50,7 +51,7 @@ timeDistro.GetXaxis().SetTitleSize(0.05)
 timeDistro.GetYaxis().SetTitleSize(0.05)
 timeDistro.GetYaxis().SetTitle("Frequency [ns]")
 timeDistro.Draw()
-canvas1.Print("../fig/timeDistro.pdf")
+canvas1.Print("../../../fig/timeDistro.pdf")
     
 
 canvas=TCanvas()
@@ -72,7 +73,7 @@ palette.SetX2NDC(0.925)
 #palette.SetY1NDC(0.1)
 #palette.SetY2NDC(0.9)
 gPad.Modified()
-canvas.Print("../fig/fullFrame.pdf")
+canvas.Print("../../../fig/fullFrame.pdf")
 
 
 canvas=TCanvas()
@@ -94,5 +95,5 @@ palette.SetX2NDC(0.925)
 #palette.SetY1NDC(0.1)
 #palette.SetY2NDC(0.9)
 gPad.Modified()
-canvas.Print("../fig/fullFrameUncleaned.pdf")
+canvas.Print("../../../fig/fullFrameUncleaned.pdf")
 

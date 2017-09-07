@@ -8,7 +8,7 @@ gROOT.Reset()
 gStyle.SetOptStat("");
 histoPions=TH1D("","",30,0,30)
 hasStarted=False
-for line in open("/home/helga/code/finalTimepix/simu/runningFLUKA/testPion001_fort.22"):
+for line in open("../simu/runningFLUKA/testPion001_fort.22"):
     columns = line.split()
     if((len(columns)>0 and columns[0]=="Binning")):
         hasStarted=True
@@ -22,7 +22,7 @@ for line in open("/home/helga/code/finalTimepix/simu/runningFLUKA/testPion001_fo
 
                             
 
-rootdir="/home/helga/newTimepixFiles/"
+rootdir="/home/helga/TimepixArticle/data/newTimepixFiles/"
 dataPixelHistoRaw=TH1D("","",30,0,30)
 
 for subdir, dirs, files in os.walk(rootdir):
@@ -59,7 +59,7 @@ legend2.SetTextSize(0.035)
 legend2.AddEntry(histoPions,"#splitline{A MIP transversing}{ 27.5 um of silicon}")
 legend2.AddEntry(dataPixelHistoRaw,"#splitline{Energy measured in the}{ pixels for the main dataset}")
 legend2.Draw("same")
-canvas2.Print("/home/helga/code/finalTimepix/fig/pixelDistribution.pdf")
+canvas2.Print("../../../fig/pixelDistribution.pdf")
 
 
                 

@@ -72,5 +72,5 @@ plt.ylabel("current (A)",fontsize=18)
 ax=plt.gca()
 ax.tick_params(axis='both', which='major', labelsize=16)
 #plt.show()
-plt.savefig("../fig/currents.pdf")
+plt.savefig("../../../fig/currents.pdf")
 

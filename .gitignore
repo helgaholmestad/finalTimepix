@@ -8,7 +8,7 @@
 *.toc
 *.log
 *.pdf
-
+*.pyc
 
 *.timer.out
 *.err
@@ -17,3 +17,4 @@
 exe
 *ranexam*
 *ransupersimpelTimepix*
+*rantestPion*

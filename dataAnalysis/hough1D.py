@@ -3,8 +3,10 @@ import math
 import sys
 import numpy as np
 from scipy import linspace, polyval, polyfit, sqrt, stats, randn
-from ROOT import gROOT, TCanvas,TH1D,TH2D,TFile,TStyle,TLegend,TPave,TPaveStats,TPad,TPaveLabel,gStyle,gPad,TPaletteAxis,TLine
-gROOT.Reset()
+#from ROOT import gROOT, TCanvas,TH1D,TH2D,TFile,TStyle,TLegend,TPave,TPaveStats,TPad,TPaveLabel,gStyle,gPad,TPaletteAxis,TLine
+#gROOT.Reset()
+from ROOT import gROOT,TCanvas,TH1D,TH2D,TFile,TStyle,TLegend,TPave,TPaveStats,TPad,TPaveLabel,gStyle,TPaletteAxis,TLine
+#gROOT.Reset()
 
 
 def printCanvas(histogram,title):
@@ -30,8 +32,8 @@ def printCanvas(histogram,title):
 def linearRegression(histogram):
     x=[]
     y=[]
-    for i in range(256):
-        for k in range(256):
+    for i in range(257):
+        for k in range(257):
             if histogram.GetBinContent(i,k)!=0:
                 x.append(i)
                 y.append(k)
@@ -49,7 +51,7 @@ def findMassCenter(histogram):
     def findCircle(x,y,histogram):
         pixelsInside=0
         density=histogram.GetBinContent(x,y)
-        radius=4
+        radius=5
         for i in range(1,radius,1):
             for j in range(1,radius,1):        
                 if i*j<radius*radius:
@@ -178,10 +180,8 @@ def printCluster(histogram,taggedCluster):
                 taggedCluster.write(str(i)+"  "+str(k)+"  "+str(histogram.GetBinContent(i,k))+"\n")
 
 
-
-
-
-def hough(inputfile,pattern,folder):                
+def hough(inputfile,pattern,folder):
+    print "i hough"
     taggedCluster=open(folder+"/"+pattern+"taggedClusters.txt",'a')
     meta=open(folder+"/"+pattern+"meta.txt",'a')
     tfile = TFile.Open(inputfile,'READ')
@@ -223,6 +223,7 @@ def hough(inputfile,pattern,folder):
             lines.append(addLine(max,center[0][0],center[0][1]))
             accumulator=newAccumulator(center[0][0],center[0][1],histogram)
             prong=prong+1
+        print "size",histogramD.GetEntries()
         error =linearRegression(histogramD)
         event=event+1
         meta.write("newCluster " +"\n")
