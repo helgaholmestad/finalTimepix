@@ -1,0 +1,17 @@
+#!/bin/bash
+export DIR=$(pwd)
+export current=1
+export queue=$1
+export last=$2
+
+#Typical arguments = 1nd 200
+
+#source $DIR/../../setupGeant.sh
+mkdir $DIR/results
+
+rm -r $DIR/results/*/
+
+while (( current <= last)); do
+    bsub -o STDOUT -e /dev/null -q $queue -J job_$current myjob.sh 
+    let current=current+1
+done

@@ -1,0 +1,15 @@
+###########################################
+# Sentaurus Visual I-2013.12.
+# Tcl log file.
+#------------------------------------------
+# Date: Dec 16, 2016. 09:28:30.
+# Version: 22.0.11 (1.11)
+# Mode: Interactive (GUI).
+# Hostname: lxplus0034.cern.ch.
+# Machine: Linux, x86_64, amd64.
+# Kernel: 2.6.32-642.11.1.el6.x86_64.
+###########################################
+
+load_file /afs/cern.ch/work/n/nmholmes/TCAD/finalTCAD/makeDataPoints/init_000350_des.sav
+#!-> Error: File '/afs/cern.ch/work/n/nmholmes/TCAD/finalTCAD/makeDataPoints/init_000350_des.sav' could not be loaded.
+exit 0

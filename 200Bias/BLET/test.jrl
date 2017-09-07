@@ -1,0 +1,90 @@
+
+(sdegeo:create-rectangle (position 0 0 0.0 )  (position 440 675 0.0 ) "Silicon" "silicon_bulk" )
+(sdegeo:create-rectangle (position 4 0 0.0 )  (position 51 -1 0.0 ) "SiO2" "oxide_left" )
+(sdegeo:create-rectangle (position 59 0 0.0 )  (position 106 -1 0.0 ) "SiO2" "oxide_right" )
+(sdegeo:create-rectangle (position 114 0 0.0 )  (position 161 -1 0.0 ) "SiO2" "oxide_left" )
+(sdegeo:create-rectangle (position 169 0 0.0 )  (position 216 -1 0.0 ) "SiO2" "oxide_right" )
+(sdegeo:create-rectangle (position 226 0 0.0 )  (position 273 -1 0.0 ) "SiO2" "oxide_left" )
+(sdegeo:create-rectangle (position 281 0 0.0 )  (position 328 -1 0.0 ) "SiO2" "oxide_right" )
+(sdegeo:create-rectangle (position 336 0 0.0 )  (position 381 -1 0.0 ) "SiO2" "oxide_left" )
+(sdegeo:create-rectangle (position 389 0 0.0 )  (position 436 -1 0.0 ) "SiO2" "oxide_right" )
+
+
+
+
+
+(sdegeo:define-contact-set "BACK" 4  (color:rgb 1 0 0 ) "##" )
+(sdegeo:define-contact-set "PIX1" 4  (color:rgb 1 0 0 ) "##" )
+(sdegeo:define-contact-set "PIX2" 4  (color:rgb 1 0 0 ) "##" )
+(sdegeo:define-contact-set "PIX3" 4  (color:rgb 1 0 0 ) "##" )
+(sdegeo:define-contact-set "PIX4" 4  (color:rgb 1 0 0 ) "##" )
+(sdegeo:define-contact-set "PIX5" 4  (color:rgb 1 0 0 ) "##" )
+(sdegeo:define-contact-set "PIX6" 4  (color:rgb 1 0 0 ) "##" )
+(sdegeo:define-contact-set "PIX7" 4  (color:rgb 1 0 0 ) "##" )
+(sdegeo:define-contact-set "PIX8" 4  (color:rgb 1 0 0 ) "##" )
+(sdegeo:define-contact-set "PIX9" 4  (color:rgb 1 0 0 ) "##" )
+
+
+
+(sdegeo:define-2d-contact (list (car (find-edge-id (position 2 0 0)))) "PIX1")
+(sdegeo:define-2d-contact (list (car (find-edge-id (position 55 0 0)))) "PIX2")
+(sdegeo:define-2d-contact (list (car (find-edge-id (position 110 0 0)))) "PIX3")
+(sdegeo:define-2d-contact (list (car (find-edge-id (position 165 0 0)))) "PIX4")
+(sdegeo:define-2d-contact (list (car (find-edge-id (position 220 0 0)))) "PIX5")
+(sdegeo:define-2d-contact (list (car (find-edge-id (position 277 0 0)))) "PIX6")
+(sdegeo:define-2d-contact (list (car (find-edge-id (position 334 0 0)))) "PIX7")
+(sdegeo:define-2d-contact (list (car (find-edge-id (position 385 0 0)))) "PIX8")
+(sdegeo:define-2d-contact (list (car (find-edge-id (position 438 0 0)))) "PIX9")
+(sdegeo:define-2d-contact (list (car (find-edge-id (position 220 675 0)))) "BACK")
+
+(sdedr:define-refeval-window "global_window" "Rectangle"  (position 0 -1 0) (position 440 675 0))
+(sdedr:define-refeval-window "back_doping_line" "Line"  (position 3 675 0) (position 437 675 0))
+(sdedr:define-refeval-window "pix1_doping_line" "Line"  (position 0 0 0) (position 22.5 0 0))
+(sdedr:define-refeval-window "pix2_doping_line" "Line"  (position 32.5 0 0) (position 77.5 0 0))
+(sdedr:define-refeval-window "pix3_doping_line" "Line"  (position 87.5 0 0) (position 132.5 0 0))
+(sdedr:define-refeval-window "pix4_doping_line" "Line"  (position 142.5 0 0) (position 187.5 0 0))
+(sdedr:define-refeval-window "pix5_doping_line" "Line"  (position 197.5 0 0) (position 242.5 0 0))
+(sdedr:define-refeval-window "pix6_doping_line" "Line"  (position 252.5 0 0) (position 297.5 0 0))
+(sdedr:define-refeval-window "pix7_doping_line" "Line"  (position 307.5 0 0) (position 352.5 0 0))
+(sdedr:define-refeval-window "pix8_doping_line" "Line"  (position 362.5 0 0) (position 407.5 0 0))
+(sdedr:define-refeval-window "pix9_doping_line" "Line"  (position 418.5 0 0) (position 438.0 0 0))
+
+(sdedr:define-refeval-window "particle1_window" "Rectangle"  (position 0 0 0) (position 3 675 0))
+(sdedr:define-refeval-window "particle2_window" "Rectangle"  (position 3 0 0) (position 10 675 0))
+
+
+(sdedr:define-constant-profile "bulk_doping" "PhosphorusActiveConcentration" 5e11)
+(sdedr:define-gaussian-profile "nplus" "PhosphorusActiveConcentration"  "PeakPos" 0  "PeakVal" 5e+19 "ValueAtDepth" 1e+12 "Depth" 2 "Gauss"  "Factor" 0.5)
+(sdedr:define-gaussian-profile "pplus" "BoronActiveConcentration" 	"PeakPos" 0  "PeakVal" 5e+19 "ValueAtDepth" 1e+12 "Depth" 2 "Gauss"  "Factor" 0.5)
+
+(sdedr:define-constant-profile-placement "bulk_doping_placement" "bulk_doping" "global_window")
+(sdedr:define-analytical-profile-placement "back_side_doping_placement" "nplus" "back_doping_line" "Both" "NoReplace" "Eval")
+(sdedr:define-analytical-profile-placement "pix1_doping_placement" "pplus" "pix1_doping_line" "Both" "NoReplace" "Eval")
+(sdedr:define-analytical-profile-placement "pix2_doping_placement" "pplus" "pix2_doping_line" "Both" "NoReplace" "Eval")
+(sdedr:define-analytical-profile-placement "pix3_doping_placement" "pplus" "pix3_doping_line" "Both" "NoReplace" "Eval")
+(sdedr:define-analytical-profile-placement "pix4_doping_placement" "pplus" "pix4_doping_line" "Both" "NoReplace" "Eval")
+(sdedr:define-analytical-profile-placement "pix5_doping_placement" "pplus" "pix5_doping_line" "Both" "NoReplace" "Eval")
+
+(sdedr:define-analytical-profile-placement "pix6_doping_placement" "pplus" "pix6_doping_line" "Both" "NoReplace" "Eval")
+(sdedr:define-analytical-profile-placement "pix7_doping_placement" "pplus" "pix7_doping_line" "Both" "NoReplace" "Eval")
+(sdedr:define-analytical-profile-placement "pix8_doping_placement" "pplus" "pix8_doping_line" "Both" "NoReplace" "Eval")
+(sdedr:define-analytical-profile-placement "pix9_doping_placement" "pplus" "pix9_doping_line" "Both" "NoReplace" "Eval")
+
+
+
+(sdedr:define-refinement-size "global_refinement" 10 10 0 0.1 0.1 0 )
+(sdedr:define-refinement-size "particle1_refinement" 0.25 1 0 0.25 1 0 )
+(sdedr:define-refinement-size "particle2_refinement" 2 5 0 2 5 0 )
+
+
+(sdedr:define-refinement-placement "global_mesh_placement" "global_refinement" "global_window")
+(sdedr:define-refinement-function "global_refinement" "DopingConcentration" "MaxTransDiff" 1.0)
+(sdedr:define-refinement-function "global_refinement" "MaxLenInt" "Silicon" "SiO2" 0.01 1.4 "DoubleSide")
+(sdedr:define-refinement-placement "particle1_mesh_placement" "particle1_refinement" "particle1_window" )
+(sdedr:define-refinement-placement "particle2_mesh_placement" "particle2_refinement" "particle2_window" )
+
+
+(sde:save-model "./")
+
+(sde:build-mesh "snmesh" "-a -c boxmethod" "test1")
+
