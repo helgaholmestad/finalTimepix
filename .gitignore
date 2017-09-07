@@ -8,3 +8,12 @@
 *.toc
 *.log
 *.pdf
+
+
+*.timer.out
+*.err
+*.out
+*_fort*
+exe
+*ranexam*
+*ransupersimpelTimepix*

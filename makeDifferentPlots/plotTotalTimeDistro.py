@@ -6,7 +6,7 @@ print sys.argv
 import os
 
 
-rootdir="/home/helga/newTimepixFiles"
+rootdir="/home/helga/TimepixArticle/data/newTimepixFiles"
 timeDistro=TH1D("","",200,-500,3000)
 
 def findmodeTime(filename):
@@ -52,6 +52,6 @@ timeDistro.GetXaxis().SetTitleSize(0.05)
 timeDistro.GetYaxis().SetTitleSize(0.05)
 timeDistro.GetYaxis().SetTitle("Frequency ")
 timeDistro.Draw()
-canvas1.Print("../fig/totalTimeDistro.pdf")
+canvas1.Print("../../../fig/totalTimeDistro.pdf")
 canvas1.Print("/home/helga/Presantations/MedipixMeeting2017/fig/totalTimeDistro.pdf")
     

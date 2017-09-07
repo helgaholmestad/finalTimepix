@@ -15,8 +15,8 @@ heavy=0
 numberOfEvents=0
 histogram=TH1D("multi","",7,0,7)
 
-
-for line in open("exam2001.log"):
+for line in open("../fragmentsStudy/exam2001.log"):
+#for line in open("exam2001.log"):
     columns = line.split()
     if(len(columns)>0 and columns[0]=="oo"):
         if(int(columns[1])==13):
@@ -65,23 +65,27 @@ histogram.GetXaxis().SetBinLabel(1,"pions")
 
 histogram.GetXaxis().SetBinLabel(2,"proton")
 
-histogram.GetXaxis().SetBinLabel(3,"deteron")
+histogram.GetXaxis().SetBinLabel(3,"deuteron")
 
 histogram.GetXaxis().SetBinLabel(4,"triton")
 
-histogram.GetXaxis().SetBinLabel(5,"tritium")
+histogram.GetXaxis().SetBinLabel(5,"helium-3")
 
 histogram.GetXaxis().SetBinLabel(6,"alpha")
 
 histogram.GetXaxis().SetBinLabel(7,"heavier ")
 histogram.GetYaxis().SetTitleSize(0.05)
 
+histogram.GetXaxis().SetLabelSize(0.045)
+histogram.GetYaxis().SetLabelSize(0.045)
+
+
 
 histogram.Scale(1.0/100)
 
 histogram.GetYaxis().SetTitle("Average multiplicity")
 
-histogram.GetYaxis().SetTitleOffset(0.6)
+#histogram.GetYaxis().SetTitleOffset(0.6)
 
 #histogram.GetYaxis().SetLabelSize(0.055)
 
@@ -89,9 +93,11 @@ histogram.GetXaxis().SetLabelSize(0.08)
 
 
 can =TCanvas()
+can.SetLeftMargin(0.1)
+histogram.GetYaxis().SetTitleOffset(0.7)
 gStyle.SetOptStat("");
 histogram.Draw("hist")
-can.Print("../fig/multiplicity.pdf")
+can.Print("../../../fig/multiplicity.pdf")
 
 print "proton", proton
 print "alpha", alpha
