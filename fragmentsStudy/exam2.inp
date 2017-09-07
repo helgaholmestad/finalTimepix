@@ -1,0 +1,54 @@
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8
+TITLE
+Charged pion fluence inside and around a proton-irradiated Be target
+*         ---------|---------|---------|---------|---------|---------|
+DEFAULTS                                                              PRECISIO
+BEAM          0.0005                                                  APROTON
+BEAMPOS          0.0       0.0      -1.0
+PHYSICS        1000.     1000.     1000.     1000.     1000.     1000.PEATHRES
+*         ---------|---------|---------|---------|---------|---------|
+PHYSICS          3.0                                                  EVAPORAT
+PHYSICS          1.0                                                  COALESCE
+*
+GEOBEGIN                                                              COMBNAME
+    0    0                  A simple Be target inside vacuum
+*
+RPP body1      -5000000.0 +5000000.0 -5000000.0 +5000000.0 -5000000.0 +5000000.0
+RPP body2      -1000000.0 +1000000.0 -1000000.0 +1000000.0 -100.0 +1000000.0
+*
+RPP TimePix    -.7040 .7040 -.7040 .7040 .0000 .0230
+*
+* ** RPP body3      -10.0 +10.0 -10.0 +10.0 0.0 +5.0
+END
+*
+* black hole
+regBH1       5 +body1 -body2
+* vacuum around
+regVA2       5 +body2 -TimePix
+* Be target 1st half
+regBE3       5 +TimePix
+END
+GEOEND
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8
+*  Be target, 1st and 2nd half
+*ASSIGNMA     SILICON    regBE3
+*ASSIGNMA      CARBON    regBE3
+ASSIGNMA    ALUMINUM    regBE3
+*  External Black Hole
+ASSIGNMA    BLCKHOLE    regBH1
+*  Vacuum
+ASSIGNMA      VACUUM    regVA2
+*         ---------|---------|---------|---------|---------|---------|
+DELTARAY      .00001                                 SILICON
+* e+e- and gamma production threshold set at 10 MeV
+EMFCUT        -0.010     0.010       1.0   SILICON                    PROD-CUT
+USERDUMP        100.                            1.
+RESNUCLE          3.       40.                      @ALLREGS          resnucle
+USERWEIG                                                  1.
+ROTPRBIN        501.
+*         ---------|---------|---------|---------|---------|---------|
+*
+*RANDOMIZ          1.
+*         ---------|---------|---------|---------|---------|---------|
+START          100.0
+STOP

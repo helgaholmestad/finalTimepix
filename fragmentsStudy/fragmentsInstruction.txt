@@ -1,0 +1,4 @@
+$FLUPRO/flutil/ldpm3qmd -o exe mgdraw.f
+
+Then the fluka simulation can be run with:
+$FLUPRO/flutil/rfluka -e exe -N0 -M1 exam2.inp
