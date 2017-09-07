@@ -6,9 +6,7 @@ import os
 import pp
 import time
 
-rootdir="/home/helga/newTimepixFiles"
-#rootdir= "/home/helga/scanReversedDetector"
-
+rootdir="../../../data"
 def processFile(filename,outputfile):
     from ROOT import TH1D
     pixelList=[]
@@ -61,7 +59,7 @@ def processFile(filename,outputfile):
     pixelListSorted=[]
     for i in indexSort:
         if pixelList[i][3]>modeTime+600  and pixelList[i][3]<modeTime+3000:
-            l=lpixelList+1
+            l=l+1
             pixelListSorted.append(pixelList[i])
     numberOfPixels=len(pixelListSorted)
     while True:
