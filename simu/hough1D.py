@@ -235,6 +235,7 @@ for k in tfile.GetListOfKeys():
         meta.write("notTrough"+'\n')
     event +=1
     title=histogramD.GetTitle()
+    print "hva er title",title
     clusterNumber=title.split("cluster")[0].split("event")[1]
     meta.write("clusterNumber "+str(clusterNumber)+"\n")
     

@@ -1,5 +1,5 @@
 from ROOT import gROOT, TCanvas, TH1D,TH2D,TFile
-gROOT.Reset()
+#gROOT.Reset()
 import numpy as np
 import sys
 print sys.argv
@@ -14,7 +14,7 @@ distanceR=6.1
 #rootdir="/home/helga/timepixForwardFull/20160508_Al52_0kV-3kV-4kV-3kV"
 #rootdir="/home/helga/testbeamNewCleaning/sortedData/"
 #rootdir='/home/helga/backgroundData2015'
-rootdir="/home/helga/inputfiles/scanReversedDetector"
+rootdir="/home/helga/TimepixArticle/data/scanReversedDetector"
 #clustering algorithm here
 
 

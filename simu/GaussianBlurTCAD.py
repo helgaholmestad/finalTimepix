@@ -149,6 +149,8 @@ def processOneEvent(event):
 theEvent=[]
 #plt.figure(0)
 for line in open(sys.argv[1]):
+    if teller>1002:
+        continue
 #for line in open("../runningFLUKA/supersimpelTimepixCenter001_fort.22"):
     columns = line.split()
     if((len(columns)>0 and columns[0]=="Binning")):
@@ -161,8 +163,8 @@ for line in open(sys.argv[1]):
             processOneEvent(theEvent)
         printToFile(finalData,name)
         theEvent=[]
-        finalData.Write()
-        initialData.Write()
+        #finalData.Write()
+        #initialData.Write()
         finalData=TH2D("final"+str(teller),"final"+str(teller),256,0,256,256,0,256)
         initialData=TH2D("initial"+str(teller),"initial"+str(teller),256,0,2560,256,0,2560)
         continue
@@ -180,10 +182,11 @@ for line in open(sys.argv[1]):
             # energy=float(columns[i])*1000000
             # #smoot([thePixel/2560,thePixel%2560],energy,choseSigma(energy))
         pixelNumber+=1
-#myFile.Write()
+myFile.Write()
 #radius.Draw("colz")
 #energyAroundHisto.Draw()
 fileEnergy.close()
+myFile.Close()
 plt.show()
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function run {
-    python hough1D.py datafilesJustVolcano/histograms$1TCADjustVolcano.root datafilesJustVolcano/meta$2.txt datafilesJustVolcano/prong$2.txt &
+    python hough1D.py datafiles/histograms$1TCADjustVolcano.root datafiles/meta$2.txt datafiles/prong$2.txt &
 }
 
 run 1 1
