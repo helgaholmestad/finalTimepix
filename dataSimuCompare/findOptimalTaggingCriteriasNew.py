@@ -197,10 +197,10 @@ print "lengden til simu optimal",len(simu)
 
     
 fig=plt.figure(figsize=FIGSIZE,dpi=100)
-ax0 = plt.subplot(221)
-ax1 = plt.subplot(222)
-ax2 = plt.subplot(223)
-ax3 = plt.subplot(224)
+ax0 = plt.subplot(224)
+ax1 = plt.subplot(223)
+ax2 = plt.subplot(222)
+ax3 = plt.subplot(221)
 
 ax1.plot(falseRate0Optimal,efficency0Optimal,'k--',linewidth=4,label="Without dead pixels,\n No cuts on prongs")
 ax1.plot(falseRate1Optimal,efficency1Optimal,'m',linewidth=4,label="Without dead pixels,\n At least one prong")
@@ -212,16 +212,22 @@ ax1.set_xlim(0,0.05)
 ax1.set_ylim(0.1,1.0)
 ax1.locator_params(axis='x',nbins=4)#to specify number of ticks on both or any single axes
 ax1.plot([0.0,0.5],[0.54,0.54],'b')
+ax1.plot([0.01,0.01],[0.00,1.1],'b')
 ax1.annotate(r'$p_t$ = 0.54', xy=(0.025, 0.54), xycoords='data',
              xytext=(-35,-40), textcoords='offset points', fontsize=12,
              arrowprops=dict(arrowstyle="->"))
+ax1.annotate(r'$p_f$ = 0.01', xy=(0.01, 0.74), xycoords='data',
+             xytext=(35,18), textcoords='offset points', fontsize=12,
+             arrowprops=dict(arrowstyle="->"))
+
+
 
 ax2.plot(inCenterCharge,efficency0,'k--',label="No cuts on prong")
 ax2.plot(inCenterCharge,efficency1,'m',label="At least one prong")
 ax2.plot(inCenterCharge,efficency0Optimal,'k--',linewidth=3,label="Optimal detector, No cuts on prong")
 ax2.plot(inCenterCharge,efficency1Optimal,'m',linewidth=3,label="Optimal detector, At least one prong")
 ax2.set_ylabel(r'$p_t$')
-ax2.set_xlabel("Cluster size cut \# pixels")
+ax2.set_xlabel("Cluster size cut [number of pixels]")
 ax2.plot([70,70],[0,1],'b')
 ax2.annotate('70 pixels', xy=(70, 0.8), xycoords='data',
              xytext=(+40, 0), textcoords='offset points', fontsize=11,
@@ -235,7 +241,7 @@ ax3.plot(inCenterCharge,falseRate1,'m',label="At least one prong")
 #ax3.plot(falseRate0,inCenterCharge,'k--',label="No cuts on prong")
 #ax3.plot(falseRate1,inCenterCharge,'m',label="At least one prong")
 ax3.set_ylabel(r'$p_f$')
-ax3.set_xlabel("Cluster size cut \# pixels")
+ax3.set_xlabel("Cluster size cut [ number of pixels]")
 ax3.set_xlim(0,500)
 ax3.set_ylim(0,0.05)
 ax3.plot([70,70],[0,0.05],'b')
@@ -249,8 +255,10 @@ ax0.legend(handles, labels,frameon=False,borderpad=5,fontsize=9,handlelength=4)
 
 plt.subplots_adjust(left=0.12,bottom=0.10,right=0.9,top=0.9,wspace=0.30,hspace=0.30)
 #plt.savefig("/home/helga/Presantations/MedipixMeeting2017/fig/taggingEfficency.pdf")   
-ax1.text(.5,.9,'a)',transform=ax1.transAxes)
+ax1.text(.5,.9,'c)',transform=ax1.transAxes)
 ax2.text(.5,.9,'b)',transform=ax2.transAxes)
-ax3.text(.5,.9,'c)',transform=ax3.transAxes)
+ax3.text(.5,.9,'a)',transform=ax3.transAxes)
 ax0.axis("off")
+#plt.show()
+#input()
 plt.savefig("../../../fig/taggingEfficency.pdf")   
