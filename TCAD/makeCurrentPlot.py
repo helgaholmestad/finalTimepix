@@ -1,4 +1,4 @@
-from ROOT import gROOT, TCanvas, TH1D,TH2D,TFile
+#from ROOT import gROOT, TCanvas, TH1D,TH2D,TFile
 #histoxy=TH2D("xy","xy",1000,-500,500,1000,-500,500)
 #histoxz=TH2D("xy","xy",300,-150,150,1000,-500,500)
 #histoyz=TH2D("xy","xy",300,-150,150,1000,-500,500)
@@ -23,7 +23,7 @@ P7Current=[]
 P8Current=[]
 P9Current=[]
 
-for line in open("../200Bias/MLET/10MeV/1D_plots_PARTICLE_des.plt"):
+for line in open("../200Bias/BLET/10MeV/1D_plots_PARTICLE_des.plt"):
 #for line in open(sys.argv[1]):
     columns=line.split()
     if(len(columns)>0 and str(columns[0])=="Data"):
@@ -66,11 +66,11 @@ plt.legend()
 #plt.yscale('log')
 
 plt.ylim(-3*pow(10,-10),1.5*pow(10,-10))
-plt.xlim(0,1.5*pow(10,3))
+plt.xlim(0,3.5*pow(10,3))
 plt.xlabel("time (ns)",fontsize=18)
 plt.ylabel("current (A)",fontsize=18)
 ax=plt.gca()
 ax.tick_params(axis='both', which='major', labelsize=16)
-#plt.show()
+plt.show()
 plt.savefig("../../../fig/currents.pdf")
 

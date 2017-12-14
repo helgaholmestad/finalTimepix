@@ -8,6 +8,8 @@ gROOT.Reset()
 gStyle.SetOptStat("");
 histoPions=TH1D("","",30,0,30)
 hasStarted=False
+lessThan6keV=0
+totalFill=0
 for line in open("../simu/runningFLUKA/testPion001_fort.22"):
     columns = line.split()
     if((len(columns)>0 and columns[0]=="Binning")):
@@ -17,8 +19,12 @@ for line in open("../simu/runningFLUKA/testPion001_fort.22"):
         continue 
     for i in range(len(columns)):
         if(i%2!=0):
-            histoPions.Fill(float(columns[i])*1000000)
-            
+            e=float(columns[i])*1000000
+            histoPions.Fill(e)
+            totalFill+=1
+            if e<6.0:
+              lessThan6keV+=1  
+
 
                             
 
@@ -26,7 +32,7 @@ rootdir="/home/helga/TimepixArticle/data/newTimepixFiles/"
 dataPixelHistoRaw=TH1D("","",30,0,30)
 
 for subdir, dirs, files in os.walk(rootdir):
-    print subdir
+    print(subdir)
     for file in files:
         if os.path.isfile(subdir+"/"+file) and "data_" in file and "test27" in subdir:
             for line in open(subdir+"/"+file,'r'):
@@ -42,7 +48,7 @@ canvas2=TCanvas()
 histoPions.GetXaxis().SetTitle("Measured energy deposition [keV]")
 histoPions.GetYaxis().SetTitle("Normalized frequency")
 histoPions.Scale(1.0/histoPions.Integral())
-histoPions.GetYaxis().SetRangeUser(0.001,0.9)
+histoPions.GetYaxis().SetRangeUser(0.0,0.4)
 histoPions.Draw("histo")
 
 dataPixelHistoRaw.SetLineColor(2)
@@ -52,7 +58,7 @@ dataPixelHistoRaw.GetXaxis().SetTitle("Normalized frequency")
 histoPions.GetYaxis().SetTitleSize(0.046)
 histoPions.GetXaxis().SetTitleSize(0.046)
 dataPixelHistoRaw.Draw("histo same")
-gPad.SetLogy()
+#gPad.SetLogy()
                 
 legend2 =TLegend(0.55,0.53,0.9,0.9);
 legend2.SetTextSize(0.035)
@@ -62,5 +68,5 @@ legend2.Draw("same")
 canvas2.Print("../../../fig/pixelDistribution.pdf")
 
 
-                
+print("less than 6keV",lessThan6keV*100.0/totalFill)                
             

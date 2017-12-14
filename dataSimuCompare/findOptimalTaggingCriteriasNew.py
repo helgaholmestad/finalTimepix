@@ -211,8 +211,8 @@ ax1.set_xlabel(r'$ p_f$')
 ax1.set_xlim(0,0.05)
 ax1.set_ylim(0.1,1.0)
 ax1.locator_params(axis='x',nbins=4)#to specify number of ticks on both or any single axes
-ax1.plot([0.0,0.5],[0.54,0.54],'b')
-ax1.plot([0.01,0.01],[0.00,1.1],'b')
+ax1.plot([0.0,0.5],[0.5368,0.5368],'b')
+ax1.plot([0.0113,0.0113],[0.00,1.1],'b')
 ax1.annotate(r'$p_t$ = 0.54', xy=(0.025, 0.54), xycoords='data',
              xytext=(-35,-40), textcoords='offset points', fontsize=12,
              arrowprops=dict(arrowstyle="->"))

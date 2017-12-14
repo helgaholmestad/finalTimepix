@@ -14,51 +14,52 @@ deteron=0
 heavy=0
 numberOfEvents=0
 histogram=TH1D("multi","",7,0,7)
-
-for line in open("../fragmentsStudy/exam2001.log"):
+kinetic=0
+for line in open("../fragmentsStudy/exam2001.log",encoding="latin-1"):
 #for line in open("exam2001.log"):
+    print(line)
     columns = line.split()
     if(len(columns)>0 and columns[0]=="oo"):
         if(int(columns[1])==13):
             histogram.Fill(0)
-            print "pionpluss",columns[2]
+            print("pionpluss",columns[2])
             pionspluss+=1
         elif(int(columns[1])==14):
             histogram.Fill(0)
-            print "pionminus",columns[2]
+            print("pionminus",columns[2])
             pionsminus+=1
         elif(int(columns[1])==23):
-            print "pionzero",columns[2]
+            print("pionzero",columns[2])
             pionszero+=1
         elif(int(columns[1])==1):
             histogram.Fill(1)
             proton+=1
-            print "proton",columns[2]
+            print("proton",columns[2])
         elif(int(columns[1])==8):
             neutron+=1
-            print "neutron",columns[2]
+            print("neutron",columns[2])
     
     elif(len(columns)>0 and columns[0]=="-h-"):
         if(int(columns[1])==7):
             heavy+=1
             histogram.Fill(6)
-            print "ion",columns[2]
+            print("ion",columns[2])
         if(int(columns[1])==6):
             alpha+=1
             histogram.Fill(5)
-            print "alpha",columns[2]
+            print("alpha",columns[2])
         if(int(columns[1])==5):
             histogram.Fill(3)
             helium3+=1
-            print "helium",columns[2]
+            print("helium",columns[2])
         if(int(columns[1])==4):
             histogram.Fill(4)
             triton+=1
-            print "triton",columns[2]
+            print("triton",columns[2])
         if(int(columns[1])==3):
             histogram.Fill(2)
             deteron+=1
-            print "deteron",columns[2]
+            print("deteron",columns[2])
 
 
 histogram.GetXaxis().SetBinLabel(1,"pions")
@@ -99,10 +100,10 @@ gStyle.SetOptStat("");
 histogram.Draw("hist")
 can.Print("../../../fig/multiplicity.pdf")
 
-print "proton", proton
-print "alpha", alpha
-print "helium3", helium3
-print "triton",triton
-print "deteron",deteron
-print "heavy ", heavy
+print("proton", proton)
+print("alpha", alpha)
+print("helium3", helium3)
+print("triton",triton)
+print("deteron",deteron)
+print("heavy ", heavy)
 
