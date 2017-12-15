@@ -46,7 +46,7 @@ def processFile(filename,outputfile):
         columns = line.split()
         if columns[0]=="pix_col" or len(columns)<6:
             continue
-        elif float(columns[4])>6.0:
+        elif float(columns[4])>5.0:
             tempHit=[int(columns[0]),int(columns[1]),float(columns[4]),float(columns[5])]
             pixelList.append(tempHit)
             tempHist.Fill(float(columns[5]))
