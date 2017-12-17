@@ -30,8 +30,8 @@ END
 GEOEND
 * ..+....1....+....2....+....3....+....4....+....5....+....6....+....7..
 ASSIGNMA    BLCKHOLE   BLKBODY
-ASSIGNMA     SILICON    TARGET
-ASSIGNMA    ALUMINUM   TARGET1
+ASSIGNMA    ALUMINUM    TARGET
+ASSIGNMA     SILICON   TARGET1
 ASSIGNMA      VACUUM      VOID
 RANDOMIZ          1.        4.
 EVENTBIN        -10.    ENERGY       22.      .704      .704    1.0675

@@ -121,6 +121,7 @@ def findVertex(listOfTracks,centerx,centery,truthx,truthy):
     bestAngle=400
     bestValue=(0,0)
     foundGood=False
+    print("number of tracs",len(listOfTracks))
     if len(listOfTracks)<2:
         return None
     while len(listOfTracks)>1:
@@ -141,6 +142,7 @@ def findVertex(listOfTracks,centerx,centery,truthx,truthy):
             fromTruth=55.0*np.sqrt((truthx-resultx)*(truthx-resultx)+(truthy-resulty)*(truthy-resulty))
             numberOfPixels=(len(listOfTracks[0])+len(listOfTracks[1]))*0.5
             file.write(str(length)+"  "+str(offset)+"  "+str(fromTruth)+"  "+str(fromCenter)+"  "+str(numberOfPixels)+"\n")
+            allResults.write(str(resultx)+"  "+str(resulty)+"  "+str(offset)+"\n")
             if offset<bestAngle and fromCenter<80:
                 foundGood=True
                 bestAngle=offset
@@ -161,6 +163,7 @@ event=-1
 antall=0
 
 file=open("corrData.txt",'w')
+allResults=open("allResults.txt",'w')
 for line in open(sys.argv[1],'r'):
     columns=line.split()
     if columns[0]=="new" and columns[1]=="cluster":
@@ -188,6 +191,7 @@ for line in open(sys.argv[1],'r'):
             listOfTracks=[]
             continue            
         theVertex= findVertex(listOfTracks,massCenterx,massCentery,truthDict[event][0],truthDict[event][1])
+        allResults.write("end  "+str(truthDict[event][0])+"  "+str(truthDict[event][1])+"  "+str(massCenterx)+"  "+str(massCentery)+"\n")
         if theVertex==None:
             listOfTracks=[]
             continue

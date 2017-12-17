@@ -65,7 +65,7 @@ def makeCombinedPlot(histosim,histos,histob,combined,yrange,log,name,xaxis,scale
     legend.Draw("same")
     if log==True:
         can.SetLogy()
-    can.Print("../../../fig/compare/"+str(name)+".pdf")
+    can.Print("../../../timepixArticle/fig/compare/"+str(name)+".pdf")
 
 
 
@@ -124,7 +124,7 @@ def makeCombinedPlotTagged(histosim,histos,histob,combined,originsim,origins,ori
     legend.Draw("same")
     if log==True:
         can.SetLogy()
-    can.Print("../../../fig/compare/"+str(name)+".pdf")
+    can.Print("../../../timepixArticle/fig/compare/"+str(name)+".pdf")
 
 
     

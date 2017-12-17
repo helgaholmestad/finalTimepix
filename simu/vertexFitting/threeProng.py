@@ -103,7 +103,7 @@ for line in open(sys.argv[1],'r'):
 residual=np.array(residual)
 residual = residual[np.isfinite(residual)]
 residual.sort()
-proportion=len(residual)/40000.0
+proportion=len(residual)/20000.0
 print "vertex fitting method"
 print proportion
 print residual[int(len(residual)*0.68)]
@@ -111,6 +111,7 @@ residualSimple=np.array(residualSimple)
 residualSimple = residualSimple[np.isfinite(residualSimple)]
 residualSimple.sort()
 print "mass center method"
+print len(residualSimple)
 print residualSimple[int(len(residualSimple)*0.68)]
 
 
@@ -154,7 +155,7 @@ histo.GetZaxis().SetTitle("Frequency [1.0/#mum^2]")
 histo.GetZaxis().SetTitleSize(0.05)
 histo.GetZaxis().SetTitleOffset(1.3)
 gPad.Modified()
-can.Print("../../../../fig/2dfit.pdf")
+can.Print("../../../../timepixArticle/fig/2dfit.pdf")
 
 
 
@@ -184,7 +185,7 @@ histoSimple.GetZaxis().SetTitle("Frequency [1.0/#mum^2]")
 histoSimple.GetZaxis().SetTitleSize(0.05)
 histoSimple.GetZaxis().SetTitleOffset(1.3)
 gPad.Modified()
-canS.Print("../../../../fig/2dfitSimple.pdf")
+canS.Print("../../../../timepixArticle/fig/2dfitSimple.pdf")
 
 
 
@@ -204,7 +205,7 @@ histo1D.GetYaxis().SetLabelSize(0.045)
 
 histo1D.GetXaxis().SetTitleOffset(1.1)
 histo1D.GetYaxis().SetTitleOffset(1.1)
-can1.Print("../../../../fig/1dfit.pdf")
+can1.Print("../../../../timepixArticle/fig/1dfit.pdf")
 
 
 
@@ -223,7 +224,7 @@ histoSimple1D.GetXaxis().SetLabelSize(0.045)
 histoSimple1D.GetYaxis().SetLabelSize(0.045)
 histoSimple1D.GetXaxis().SetTitleOffset(1.1)
 histoSimple1D.GetYaxis().SetTitleOffset(1.1)
-can1.Print("../../../../fig/1dfitSimple.pdf")
+can1.Print("../../../../timepixArticle/fig/1dfitSimple.pdf")
 
 
 

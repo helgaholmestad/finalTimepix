@@ -15,7 +15,8 @@ heavy=0
 numberOfEvents=0
 histogram=TH1D("multi","",7,0,7)
 kinetic=0
-for line in open("../fragmentsStudy/exam2001.log",encoding="latin-1"):
+#for line in open("../fragmentsStudy/exam2001.log",encoding="latin-1"):
+for line in open("../fragmentsStudy/exam2001.log"):
 #for line in open("exam2001.log"):
     print(line)
     columns = line.split()
@@ -98,7 +99,7 @@ can.SetLeftMargin(0.1)
 histogram.GetYaxis().SetTitleOffset(0.7)
 gStyle.SetOptStat("");
 histogram.Draw("hist")
-can.Print("../../../fig/multiplicity.pdf")
+can.Print("../../../timepixArticle/fig/multiplicity.pdf")
 
 print("proton", proton)
 print("alpha", alpha)

@@ -16,7 +16,7 @@ for line in open(filename):
     columns=line.split()
     if columns[0]=="new" or columns[0]=="pix_col":
         continue
-    if float(columns[4])<6.0:
+    if float(columns[4])<5.0:
         continue
     tmp.Fill(float(columns[5]))
 
@@ -35,7 +35,7 @@ for line in open(filename):
         continue
     if float(columns[5])>modeTime+600 and float(columns[5])<modeTime+3000:
          uncleanedHisto.Fill(float(columns[0]),float(columns[1]),float(columns[4]))
-    if float(columns[4])<6.0:
+    if float(columns[4])<5.0:
         continue
     d=float(columns[5])-modeTime
     timeDistro.Fill(d)
@@ -73,7 +73,7 @@ palette.SetX2NDC(0.925)
 #palette.SetY1NDC(0.1)
 #palette.SetY2NDC(0.9)
 gPad.Modified()
-canvas.Print("../../../fig/fullFrame.pdf")
+canvas.Print("../../../timepixArticle/fig/fullFrame.pdf")
 
 
 canvas=TCanvas()
@@ -95,5 +95,5 @@ palette.SetX2NDC(0.925)
 #palette.SetY1NDC(0.1)
 #palette.SetY2NDC(0.9)
 gPad.Modified()
-canvas.Print("../../../fig/fullFrameUncleaned.pdf")
+canvas.Print("../../../timepixArticle/fig/fullFrameUncleaned.pdf")
 

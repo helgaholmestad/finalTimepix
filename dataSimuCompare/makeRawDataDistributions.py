@@ -62,10 +62,10 @@ dataPixelHistoRaw.Draw("histo same")
                 
 legend2 =TLegend(0.55,0.53,0.9,0.9);
 legend2.SetTextSize(0.035)
-legend2.AddEntry(histoPions,"#splitline{A MIP transversing}{ 27.5 um of silicon}")
+legend2.AddEntry(histoPions,"#splitline{A MIP transversing}{ 39.2 um of silicon}")
 legend2.AddEntry(dataPixelHistoRaw,"#splitline{Energy measured in the}{ pixels for the main dataset}")
 legend2.Draw("same")
-canvas2.Print("../../../fig/pixelDistribution.pdf")
+canvas2.Print("../../../timepixArticle/fig/pixelDistribution.pdf")
 
 
 print("less than 6keV",lessThan6keV*100.0/totalFill)                
