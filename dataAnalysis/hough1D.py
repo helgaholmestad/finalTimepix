@@ -26,7 +26,7 @@ def printCanvas(histogram,title):
     palette.SetY2NDC(0.9)
     gPad.Modified()
     gPad.Update()
-    print "title",title
+    print ("title",title)
     can.Print(title+".png")
  
 def linearRegression(histogram):
@@ -151,6 +151,10 @@ def removeLine(centerx,centery,maxTheta,histogram):
     #prongs.write("prong \n")
     originalNumberOfPixels=histogram.GetEntries()
     numberOfRemovedPixels=0
+    maxx=0
+    minx=1000
+    maxy=0
+    miny=1000
     for i in range(256):
         for j in range(256):
             pixelInfo=str(i)+"  "+str(j)+"  "+str(histogram.GetBinContent(i,j))+"\n"
@@ -161,6 +165,14 @@ def removeLine(centerx,centery,maxTheta,histogram):
                     if j-centery <0:
                         theta=-theta
                     if abs(theta-maxTheta)<(20.0/180)*np.pi:
+                        if i>maxx:
+                            maxx=i
+                        if i<minx:
+                            minx=i
+                        if j>maxy:
+                            maxy=j
+                        if j<miny:
+                            miny=j
                         #prongs.write(pixelInfo)
                         histogram.SetBinContent(i,j,0)
                         numberOfRemovedPixels=numberOfRemovedPixels+1
@@ -169,8 +181,10 @@ def removeLine(centerx,centery,maxTheta,histogram):
                         histogram.SetBinContent(i,j,0)
                         numberOfRemovedPixels=numberOfRemovedPixels+1
     #prongs.write("pixelsInProng  "+str(numberOfRemovedPixels)+"\n")
-    return histogram,numberOfRemovedPixels
-
+    deltax=maxx-minx
+    deltay=maxy-miny
+    lengthOfProng=55.0*np.sqrt(deltax*deltax+deltay*deltay)           
+    return histogram,numberOfRemovedPixels,lengthOfProng
 
 def printCluster(histogram,taggedCluster):
     taggedCluster.write("new \n")
@@ -181,7 +195,7 @@ def printCluster(histogram,taggedCluster):
 
 
 def hough(inputfile,pattern,folder):
-    print "i hough"
+    print ("i hough")
     taggedCluster=open(folder+"/"+pattern+"taggedClusters.txt",'a')
     meta=open(folder+"/"+pattern+"meta.txt",'a')
     tfile = TFile.Open(inputfile,'READ')
@@ -198,10 +212,10 @@ def hough(inputfile,pattern,folder):
         meta.write("noFile"+'\n')
         meta.close()
         return
-    print len(tfile.GetListOfKeys())
+    print (len(tfile.GetListOfKeys()))
     for k in range(len(tfile.GetListOfKeys())-3):
         pNumber=0
-        print "er vi her"
+        print ("er vi her")
         histogramD=  tfile.Get("clusterNumber "+str(k))
         histogram=histogramD.Clone()
         lines=[]
@@ -212,29 +226,36 @@ def hough(inputfile,pattern,folder):
         ratio=findRatio(center[0][0],center[0][1],histogramCenter)
         accumulator=newAccumulator(center[0][0],center[0][1],histogram)
         prong=0
+        prongLenghts=[]
         while True:
             pNumber=pNumber+1
             maxBin=accumulator.GetMaximumBin()
             if accumulator.GetBinContent(maxBin)<4:
                 break
             max=accumulator.GetXaxis().GetBinCenter(accumulator.GetMaximumBin())
-            histogram,pixelsInLine=removeLine(center[0][0],center[0][1],max,histogram)
+            histogram,pixelsInLine,lengthOfProng=removeLine(center[0][0],center[0][1],max,histogram)
+            prongLenghts.append(lengthOfProng)
             pixelsLeft=histogramD.GetEntries()-pixelsInLine
             lines.append(addLine(max,center[0][0],center[0][1]))
             accumulator=newAccumulator(center[0][0],center[0][1],histogram)
             prong=prong+1
-        print "size",histogramD.GetEntries()
+        print ("size",histogramD.GetEntries())
         error =linearRegression(histogramD)
         event=event+1
+        prongLengthString=""
+        for p in prongLenghts:
+            prongLengthString=prongLengthString+str(p)+"  "
         meta.write("newCluster " +"\n")
         meta.write("energy "+str(center[1])+"\n")
         meta.write("pixels "+str(histogramD.GetEntries())+"\n")
         meta.write("prong "+str(prong)+"\n")
+        meta.write("prongLenght "+prongLengthString +"\n")
         meta.write("clusterCharge "+str(clusterCharge) +"\n")
         meta.write("error "+str(error)+"\n")
         #printCanvas(histogramCenter,str(sys.argv[2]+"event"+str(event)))
-        if error >1.0 and prong>0 and center[1]>800:
+        if error >1.0 and prong>0 and histogramD.GetEntries()>70:
             meta.write("trough"+'\n')
+            printCanvas(hisgogramCenter,str("figures/")+sys.argv[2]+"event"+str(event))
             printCluster(histogramD,taggedCluster)
         else:
             meta.write("notTrough"+'\n')
