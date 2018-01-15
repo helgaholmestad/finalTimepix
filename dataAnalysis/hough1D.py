@@ -194,8 +194,8 @@ def printCluster(histogram,taggedCluster):
                 taggedCluster.write(str(i)+"  "+str(k)+"  "+str(histogram.GetBinContent(i,k))+"\n")
 
 
-def hough(inputfile,pattern,folder):
-    print ("i hough")
+def hough(inputfile,pattern,folder,eventNumber):
+    #print ("i hough")
     taggedCluster=open(folder+"/"+pattern+"taggedClusters.txt",'a')
     meta=open(folder+"/"+pattern+"meta.txt",'a')
     tfile = TFile.Open(inputfile,'READ')
@@ -212,12 +212,15 @@ def hough(inputfile,pattern,folder):
         meta.write("noFile"+'\n')
         meta.close()
         return
-    print (len(tfile.GetListOfKeys()))
+    #print (len(tfile.GetListOfKeys()))
     for k in range(len(tfile.GetListOfKeys())-3):
         pNumber=0
-        print ("er vi her")
+        #print ("er vi her")
         histogramD=  tfile.Get("clusterNumber "+str(k))
         histogram=histogramD.Clone()
+        eventNumber=event+1
+        if histogram.GetEntries()<70:
+            continue
         lines=[]
         center=findMassCenter(histogram)
         clusterCharge=findClusterCharge(histogram)
@@ -239,9 +242,8 @@ def hough(inputfile,pattern,folder):
             lines.append(addLine(max,center[0][0],center[0][1]))
             accumulator=newAccumulator(center[0][0],center[0][1],histogram)
             prong=prong+1
-        print ("size",histogramD.GetEntries())
+        #print ("size",histogramD.GetEntries())
         error =linearRegression(histogramD)
-        event=event+1
         prongLengthString=""
         for p in prongLenghts:
             prongLengthString=prongLengthString+str(p)+"  "
@@ -255,11 +257,12 @@ def hough(inputfile,pattern,folder):
         #printCanvas(histogramCenter,str(sys.argv[2]+"event"+str(event)))
         if error >1.0 and prong>0 and histogramD.GetEntries()>70:
             meta.write("trough"+'\n')
-            printCanvas(hisgogramCenter,str("figures/")+sys.argv[2]+"event"+str(event))
+            printCanvas(hisgogramCenter,str("figures/")+sys.argv[2]+"event"+str(eventNumber))
             printCluster(histogramD,taggedCluster)
         else:
             meta.write("notTrough"+'\n')
     meta.close()
+    return eventNumber
 #if __name__ == '__main__':
 #    hough1D(inputfile,pattern,folder):
     

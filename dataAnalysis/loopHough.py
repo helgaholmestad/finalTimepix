@@ -31,13 +31,14 @@ def findPurity(pattern):
     if os.path.isfile(str("datafiles/"+pattern+"prongs.txt")):
         os.remove(str("datafiles/"+pattern+"prongs.txt"))    
     counter=0
+    eventNumber=0
     for subdir, dirs, files in os.walk(rootdir):
         if not pattern in subdir:
             continue
         for file in files:
             if os.path.isfile(subdir+"/"+file) and "histograms" in file and ".root" in file and "test27" in subdir and not "~" in file:
                 print "er vi her"
-                hough1D.hough(str(subdir+"/"+file),pattern,"datafiles")
+                eventNumber=hough1D.hough(str(subdir+"/"+file),pattern,"datafiles",eventNumber)
          
 print "HEI!!"
 findPurity(sys.argv[1])
