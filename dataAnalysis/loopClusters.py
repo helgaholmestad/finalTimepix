@@ -33,7 +33,7 @@ def plotClusters(filepath):
         if columns[0]=="new":
             if hasStarted==False:
                 modeTime=float(columns[2])
-                histogramTime=TH1D("ToA","ToA",200,-1000,1000)
+                histogramTime=TH1D("ToA","ToA",200,-1000,3000)
             #if hasStarted and histogram.GetEntries()>10 and histogram.GetEntries()<1000:
             if hasStarted and histogram.GetEntries()>0 and histogram.GetEntries()<1000:
                 average=totalTime/(1.0*numberOfPixels)
