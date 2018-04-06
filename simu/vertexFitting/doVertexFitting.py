@@ -6,8 +6,8 @@ import numpy as np
 from ROOT import gROOT, TCanvas,TH1D,TH2D,TFile,TStyle,TLegend,TPave,TPaveStats,TPad,TPaveLabel,gStyle,gPad,TPaletteAxis,TLine
 gROOT.Reset()
 from scipy import stats
-import sympy
-from sympy import *
+#import sympy
+#from sympy import *
 import math
 import scipy.odr.odrpack as odrpack
 from numpy import polyfit
@@ -236,6 +236,7 @@ gStyle.SetOptStat("")
 gStyle.SetFrameLineColor(0); 
 gPad.Update()
 palette=histo.GetListOfFunctions().FindObject("palette")
+gPad.Update()
 #can.SetRightMargin(0.2)
 #can.SetBottomMargin(0.15)
 #can.SetLeftMargin(0.15)

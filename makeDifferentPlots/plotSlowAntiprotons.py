@@ -21,8 +21,11 @@ for line in open(filename):
     tmp.Fill(float(columns[5]))
 
 gStyle.SetOptStat("")
+#gStyle.SetPalette()
+#gStyle.SetTextFont(1)
+#gStyle.SetLegendFont(1)
+#gStyle.SetTitleFont(1,'t')
 
-    
 modeTime= tmp.GetBinCenter(tmp.GetMaximumBin())
 print modeTime
 modeTime= 360590.0
@@ -58,11 +61,15 @@ canvas=TCanvas()
 slowHisto.Draw("colz")
 slowHisto.GetXaxis().SetTitle("pixel #")
 slowHisto.GetYaxis().SetTitle("pixel #")
-slowHisto.GetXaxis().SetTitleSize(0.05)
-slowHisto.GetYaxis().SetTitleSize(0.05)
-slowHisto.GetZaxis().SetTitleSize(0.05)
+slowHisto.GetXaxis().SetTitleSize(0.045)
+slowHisto.GetYaxis().SetTitleSize(0.045)
+#slowHisto.GetXaxis().SetTitleFont(131)
+#slowHisto.GetYaxis().SetTitleFont(131)
+#slowHisto.GetZaxis().SetTitleFont(131)
+
+slowHisto.GetZaxis().SetTitleSize(0.045)
 slowHisto.GetZaxis().SetTitle("Measured energy deposition [keV]")
-slowHisto.GetZaxis().SetTitleOffset(0.7)
+slowHisto.GetZaxis().SetTitleOffset(0.8)
 
 gStyle.SetOptStat("")
 gPad.Update()
@@ -80,11 +87,16 @@ canvas=TCanvas()
 uncleanedHisto.Draw("colz")
 uncleanedHisto.GetXaxis().SetTitle("pixel #")
 uncleanedHisto.GetYaxis().SetTitle("pixel #")
-uncleanedHisto.GetXaxis().SetTitleSize(0.05)
-uncleanedHisto.GetYaxis().SetTitleSize(0.05)
-uncleanedHisto.GetZaxis().SetTitleSize(0.05)
+uncleanedHisto.GetXaxis().SetTitleSize(0.045)
+uncleanedHisto.GetYaxis().SetTitleSize(0.045)
+uncleanedHisto.GetZaxis().SetTitleSize(0.045)
+
+#uncleanedHisto.GetXaxis().SetTitleFont(131)
+#uncleanedHisto.GetYaxis().SetTitleFont(131)
+#uncleanedHisto.GetZaxis().SetTitleFont(131)
+
 uncleanedHisto.GetZaxis().SetTitle("Measured energy deposition [keV]")
-uncleanedHisto.GetZaxis().SetTitleOffset(0.7)
+uncleanedHisto.GetZaxis().SetTitleOffset(0.8)
 
 gStyle.SetOptStat("")
 gPad.Update()

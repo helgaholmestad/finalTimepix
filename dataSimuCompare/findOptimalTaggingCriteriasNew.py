@@ -14,7 +14,8 @@ FIGSIZE=(ratio*PAGEWIDTH_INCH,ratio*PAGEWIDTH_INCH*1.0)
 from matplotlib import rcParams,rc
 rcParams.update({'text.usetex':True})
 #rc('font',**{'family':'serif','serif':['Times'],'size':11})
-rc('font',**{'family':'serif','serif':['Times'],'size':10})
+#rc('font',**{'family':'serif','serif':['Times'],'size':9})
+rc('font',**{'family':'sans-serif','size':9})
 
 def tagging (data,background,simu,size,energy,clusterCharge,prong):
     taggedData=0
@@ -202,51 +203,51 @@ ax1 = plt.subplot(223)
 ax2 = plt.subplot(222)
 ax3 = plt.subplot(221)
 
-ax1.plot(falseRate0Optimal,efficency0Optimal,'k--',linewidth=4,label="Without dead pixels,\n No cuts on prongs")
-ax1.plot(falseRate1Optimal,efficency1Optimal,'m',linewidth=4,label="Without dead pixels,\n At least one prong")
-ax1.plot(falseRate0,efficency0,'k--',label="With dead pixels,\n No cuts on prongs")
-ax1.plot(falseRate1,efficency1,'m',label="With dead pixels,\n At least one prong")
+ax1.plot(falseRate0Optimal,efficency0Optimal,'k--',linewidth=4,label="Without supressed pixels,\n No cuts on prongs")
+ax1.plot(falseRate1Optimal,efficency1Optimal,'',linewidth=4,label="Without supressed pixels,\n At least one prong",color='xkcd:blue')
+ax1.plot(falseRate0,efficency0,'k--',label="With supressed pixels,\n No cuts on prongs")
+ax1.plot(falseRate1,efficency1,'',label="With supressed pixels,\n At least one prong",color='xkcd:blue')
 ax1.set_ylabel(r'$ p_t$')
 ax1.set_xlabel(r'$ p_f$')
 ax1.set_xlim(0,0.05)
 ax1.set_ylim(0.1,1.0)
 ax1.locator_params(axis='x',nbins=4)#to specify number of ticks on both or any single axes
-ax1.plot([0.0,0.5],[0.5368,0.5368],'b')
-ax1.plot([0.0113,0.0113],[0.00,1.1],'b')
+ax1.plot([0.0,0.5],[0.5368,0.5368],color='xkcd:light grey')
+ax1.plot([0.0113,0.0113],[0.00,1.1],color='xkcd:light grey')
 ax1.annotate(r'$p_t$ = 0.54', xy=(0.025, 0.54), xycoords='data',
-             xytext=(-35,-40), textcoords='offset points', fontsize=12,
+             xytext=(-35,-40), textcoords='offset points', fontsize=9,
              arrowprops=dict(arrowstyle="->"))
 ax1.annotate(r'$p_f$ = 0.01', xy=(0.01, 0.74), xycoords='data',
-             xytext=(35,18), textcoords='offset points', fontsize=12,
+             xytext=(35,10), textcoords='offset points', fontsize=9,
              arrowprops=dict(arrowstyle="->"))
 
 
 
 ax2.plot(inCenterCharge,efficency0,'k--',label="No cuts on prong")
-ax2.plot(inCenterCharge,efficency1,'m',label="At least one prong")
+ax2.plot(inCenterCharge,efficency1,'',label="At least one prong",color='xkcd:blue')
 ax2.plot(inCenterCharge,efficency0Optimal,'k--',linewidth=3,label="Optimal detector, No cuts on prong")
-ax2.plot(inCenterCharge,efficency1Optimal,'m',linewidth=3,label="Optimal detector, At least one prong")
+ax2.plot(inCenterCharge,efficency1Optimal,'',linewidth=3,label="Optimal detector, At least one prong",color='xkcd:blue')
 ax2.set_ylabel(r'$p_t$')
 ax2.set_xlabel("Cluster size cut [number of pixels]")
-ax2.plot([70,70],[0,1],'b')
+ax2.plot([70,70],[0,1],color='xkcd:light grey')
 ax2.annotate('70 pixels', xy=(70, 0.8), xycoords='data',
-             xytext=(+40, 0), textcoords='offset points', fontsize=11,
+             xytext=(+40, 0), textcoords='offset points', fontsize=9,
              arrowprops=dict(arrowstyle="->"))
 #arrowprops=dict(facecolor='black', connectionstyle="arc3,rad=.2",shrink=0.05),
 ax2.set_ylim(0,1)
 ax2.set_xlim(0,500)
 
 ax3.plot(inCenterCharge,falseRate0,'k--',label="No cuts on prong")
-ax3.plot(inCenterCharge,falseRate1,'m',label="At least one prong")
+ax3.plot(inCenterCharge,falseRate1,'',label="At least one prong",color='xkcd:blue')
 #ax3.plot(falseRate0,inCenterCharge,'k--',label="No cuts on prong")
 #ax3.plot(falseRate1,inCenterCharge,'m',label="At least one prong")
 ax3.set_ylabel(r'$p_f$')
-ax3.set_xlabel("Cluster size cut [ number of pixels]")
+ax3.set_xlabel("Cluster size cut [number of pixels]")
 ax3.set_xlim(0,500)
 ax3.set_ylim(0,0.05)
-ax3.plot([70,70],[0,0.05],'b')
+ax3.plot([70,70],[0,0.05],color='xkcd:light grey')
 ax3.annotate('70 pixels', xy=(70, 0.04), xycoords='data',
-             xytext=(+40,0), textcoords='offset points', fontsize=11,
+             xytext=(+40,0), textcoords='offset points', fontsize=9,
              arrowprops=dict(arrowstyle="->"))
 handles, labels = ax1.get_legend_handles_labels()
 ax0.legend(handles, labels,frameon=False,borderpad=5,fontsize=9,handlelength=4)

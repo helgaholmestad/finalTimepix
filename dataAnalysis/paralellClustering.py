@@ -13,7 +13,7 @@ def processFile(filename,outputfile):
     distanceT=20.
     distanceR=4.1
     file=open(outputfile,'w')
-    print "working with file",filename
+    print("working with file",filename)
     def findNeigbours(tmpPixel):
         lookForNext=[]
         for i in pixelListSorted:
@@ -53,8 +53,8 @@ def processFile(filename,outputfile):
             timeSort.append(float(columns[5]))
     numpy.asarray(timeSort)
     modeTime=tempHist.GetBinCenter(tempHist.GetMaximumBin())
-    print "mode time",modeTime
-    print len(pixelList)
+    print("mode time",modeTime)
+    print(len(pixelList))
     indexSort=numpy.argsort(timeSort)
     pixelListSorted=[]
     for i in indexSort:
@@ -75,7 +75,6 @@ def doClustering(filepath):
     output=filepath.replace("data_","clustering")
     processFile(filepath,output)
 #doClustering("/home/helga/testbeamNewCleaning/sortedData/46um/bending6000/20151003_46umDeg_all3000V/00_20151003_171600/test27_datadriven_AD/data_1.dat")    
-
 
     
 theFiles=[]
@@ -100,7 +99,7 @@ else:
     # Creates jobserver with automatically detected number of workers
     job_server = pp.Server(ppservers=ppservers)
 
-print "Starting pp with", job_server.get_ncpus(), "workers"
+print("Starting pp with", job_server.get_ncpus(), "workers")
 
 ppservers = ()
 
@@ -114,10 +113,10 @@ for k in range(len(theFiles)):
 # #jobs = [(input, job_server.submit(sum_primes,(input,), (isprime,), ("math",))) for input in inputs]
 teller=0
 for job in jobs:
-    print "teller ", teller
+    print("teller ", teller)
     teller=teller+1
-    print "er vi her"
+    print("er vi her")
     job()
 
-print "Time elapsed: ", time.time() - start_time, "s"
+print("Time elapsed: ", time.time() - start_time, "s")
 job_server.print_stats()

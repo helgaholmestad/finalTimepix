@@ -7,6 +7,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
+import math
 hasNotStarted=True
 inData=False
 event=0
@@ -50,10 +51,10 @@ for line in open("../200Bias/BLET/10MeV/1D_plots_PARTICLE_des.plt"):
  
 pi=3.141
 plt.figure(0)
-time=np.asarray(time)
-print type(time)
-time=time*1000000000
-
+timeRaw=np.asarray(time)
+print(type(time))
+time=timeRaw*1000000000
+print(time)
 #plt.plot(time,P1Current,'red',label="Pixel 0")
 #plt.plot(time,np.asarray(P2Current)/(2*pi),'blue',label="Pixel 1")
 #plt.plot(time,np.asarray(P3Current)/(4*pi),'green',label="Pixel 2")
@@ -61,16 +62,51 @@ time=time*1000000000
 #plt.plot(time,np.asarray(P5Current)/(8*pi),'magenta',label="Pixel 4")
 #plt.plot(time,np.asarray(P6Current)/(10*pi),'magenta',label="Pixel 5")
 plt.plot(time,np.asarray(P7Current)/(12*pi),'k--',label="330 mu ",linewidth=3)
-plt.plot(time,np.asarray(P8Current)/(14*pi),'magenta',label="385 mu",linewidth=3)
+#plt.plot(time,np.asarray(P8Current)/(14*pi),'magenta',label="385 mu",linewidth=3)
 plt.legend()
 #plt.yscale('log')
 
+P1CurrentNp=np.asarray(P1Current)
+P2CurrentNp=np.asarray(P2Current)
+P3CurrentNp=np.asarray(P3Current)
+P4CurrentNp=np.asarray(P4Current)
+P5CurrentNp=np.asarray(P5Current)
+P6CurrentNp=np.asarray(P6Current)
+P7CurrentNp=np.asarray(P7Current)
+P8CurrentNp=np.asarray(P8Current)
+P9CurrentNp=np.asarray(P9Current)
+
+print("pixel 1",np.trapz(P1CurrentNp,timeRaw))
+print("pixel 2",np.trapz(P2CurrentNp,timeRaw)/(2*pi))
+print("pixel 3",np.trapz(P3CurrentNp,timeRaw)/(4*pi))
+print("pixel 4",np.trapz(P4CurrentNp,timeRaw)/(6*pi))
+print("pixel 5",np.trapz(P5CurrentNp,timeRaw)/(8*pi))
+print("pixel 6",np.trapz(P6CurrentNp,timeRaw)/(10*pi))
+
+totalCharge=np.trapz(P8CurrentNp,timeRaw)#+np.trapz(P2CurrentNp,timeRaw)+np.trapz(P3CurrentNp,timeRaw)+np.trapz(P4CurrentNp,timeRaw)+np.trapz(P5CurrentNp,timeRaw)+np.trapz(P6CurrentNp,timeRaw)+np.trapz(P7CurrentNp,timeRaw)+np.trapz(P8CurrentNp,timeRaw)
+#totalCharge=np.trapz(P8CurrentNp/(14*pi),timeRaw)
+print("total deposited energy",totalCharge/(1000*1.6*math.pow(10,-19))*3.6,"keV")
 plt.ylim(-3*pow(10,-10),1.5*pow(10,-10))
 plt.xlim(0,3.5*pow(10,3))
 plt.xlabel("time (ns)",fontsize=18)
 plt.ylabel("current (A)",fontsize=18)
 ax=plt.gca()
 ax.tick_params(axis='both', which='major', labelsize=16)
-plt.show()
 plt.savefig("../../../fig/currents.pdf")
+
+plt.figure()
+plt.plot(time,np.asarray(P8Current)/(14*pi),'k--',label="Measured current 385 um from \n an 10 MeV energy deposition ",linewidth=3)
+plt.legend()
+plt.ylim(-1.0*pow(10,-10),0.5*pow(10,-10))
+plt.xlim(0,4.0*pow(10,3))
+plt.xlabel("time (ns)",fontsize=10)
+plt.ylabel("current (A)",fontsize=10)
+plt.plot([0,4000],[0,0],"grey")
+ax=plt.gca()
+ax.tick_params(axis='both', which='major', labelsize=10)
+plt.savefig("/home/helga/gitThesis/thesis/Annihilation/fig/current.pdf")
+
+
+
+
 

@@ -76,12 +76,13 @@ histogram.GetXaxis().SetBinLabel(5,"helium-3")
 histogram.GetXaxis().SetBinLabel(6,"alpha")
 
 histogram.GetXaxis().SetBinLabel(7,"heavier ")
-histogram.GetYaxis().SetTitleSize(0.05)
 
-histogram.GetXaxis().SetLabelSize(0.045)
-histogram.GetYaxis().SetLabelSize(0.045)
-
-
+histogram.GetYaxis().SetTitleOffset(0.95)
+#histogram.GetYaxis().SetTitleFont(131)
+histogram.GetYaxis().SetTitleSize(0.072)
+histogram.GetXaxis().SetLabelSize(0.101)
+histogram.GetYaxis().SetLabelSize(0.05)
+#histogram.GetXaxis().SetLabelFont(131)
 
 histogram.Scale(1.0/100)
 
@@ -91,12 +92,11 @@ histogram.GetYaxis().SetTitle("Average multiplicity")
 
 #histogram.GetYaxis().SetLabelSize(0.055)
 
-histogram.GetXaxis().SetLabelSize(0.08)
-
-
 can =TCanvas()
-can.SetLeftMargin(0.1)
-histogram.GetYaxis().SetTitleOffset(0.7)
+can.SetLeftMargin(0.2)
+can.SetBottomMargin(0.13)
+
+#histogram.GetYaxis().SetTitleOffset(0.7)
 gStyle.SetOptStat("");
 histogram.Draw("hist")
 can.Print("../../../timepixArticle/fig/multiplicity.pdf")

@@ -10,6 +10,7 @@ histoPions=TH1D("","",30,0,30)
 hasStarted=False
 lessThan6keV=0
 totalFill=0
+haloHits=0
 for line in open("../simu/runningFLUKA/testPion001_fort.22"):
     columns = line.split()
     if((len(columns)>0 and columns[0]=="Binning")):
@@ -23,10 +24,7 @@ for line in open("../simu/runningFLUKA/testPion001_fort.22"):
             histoPions.Fill(e)
             totalFill+=1
             if e<6.0:
-              lessThan6keV+=1  
-
-
-                            
+                lessThan6keV+=1  
 
 rootdir="/home/helga/TimepixArticle/data/newTimepixFiles/"
 dataPixelHistoRaw=TH1D("","",30,0,30)
@@ -39,9 +37,12 @@ for subdir, dirs, files in os.walk(rootdir):
                 columns=line.split()
                 if columns[0]=="pix_col":
                     continue
-                dataPixelHistoRaw.Fill(float(columns[4]))
+                eD=float(columns[4])
+                dataPixelHistoRaw.Fill(eD)
+                if eD<6.0:
+                    haloHits+=1
 
-
+dataPixelHistoRaw.Draw()
 canvas2=TCanvas()
 
 #histoPions.GetXaxis().SetTitle("energy deposited in 20 um silicon [keV]")
@@ -49,24 +50,40 @@ histoPions.GetXaxis().SetTitle("Measured energy deposition [keV]")
 histoPions.GetYaxis().SetTitle("Normalized frequency")
 histoPions.Scale(1.0/histoPions.Integral())
 histoPions.GetYaxis().SetRangeUser(0.0,0.4)
-histoPions.Draw("histo")
+histoPions.SetLineColor(1)
+histoPions.SetLineWidth(3)
+#histoPions.Draw("histo")
 
-dataPixelHistoRaw.SetLineColor(2)
+dataPixelHistoRaw.SetLineColor(1)
+dataPixelHistoRaw.SetFillColorAlpha(596,1.0)
 dataPixelHistoRaw.Scale(1.0/dataPixelHistoRaw.Integral())
-dataPixelHistoRaw.GetXaxis().SetTitle("Measured energy deposition [keV]")
-dataPixelHistoRaw.GetXaxis().SetTitle("Normalized frequency")
-histoPions.GetYaxis().SetTitleSize(0.046)
-histoPions.GetXaxis().SetTitleSize(0.046)
-dataPixelHistoRaw.Draw("histo same")
+dataPixelHistoRaw.GetXaxis().SetTitle("Measured energy deposition per pixel [keV]")
+dataPixelHistoRaw.GetXaxis().SetTitleOffset(0.88)
+dataPixelHistoRaw.GetYaxis().SetTitle("Normalized frequency")
+dataPixelHistoRaw.GetYaxis().SetTitleSize(0.045)
+dataPixelHistoRaw.GetXaxis().SetTitleSize(0.045)
+
+#dataPixelHistoRaw.GetXaxis().SetTitleFont(131)
+#dataPixelHistoRaw.GetYaxis().SetTitleFont(131)
+
+dataPixelHistoRaw.Draw("histo ")
+histoPions.Draw("histo same")
+#canvasT=TCanvas()
+#dataPixelHistoRaw.Draw("hist same")
+#canvasT.Print("/home/helga/gitThesis/thesis/Annihilation/fig/energyInPixels.pdf")
 #gPad.SetLogy()
-                
-legend2 =TLegend(0.55,0.53,0.9,0.9);
-legend2.SetTextSize(0.035)
-legend2.AddEntry(histoPions,"#splitline{A MIP transversing}{ 39.2 um of silicon}")
-legend2.AddEntry(dataPixelHistoRaw,"#splitline{Energy measured in the}{ pixels for the main dataset}")
+
+legend2 =TLegend(0.5,0.6,0.9,0.9);
+legend2.SetTextSize(0.043)
+#legend2.AddEntry(histoPions,"#splitline{A MIP transversing}{ 39.2 um of silicon}")
+#legend2.AddEntry(dataPixelHistoRaw,"#splitline{Energy measured in the}{ pixels for the main dataset}")
+legend2.AddEntry(histoPions,"#splitline{A MIP traversing}{39.2 um of silicon.}")
+legend2.AddEntry(dataPixelHistoRaw,"#splitline{Measured energy per}{#splitline{pixel for main dataset}{including the halo}}")
+#legend2.SetTextFont(131)
 legend2.Draw("same")
 canvas2.Print("../../../timepixArticle/fig/pixelDistribution.pdf")
 
 
-print("less than 6keV",lessThan6keV*100.0/totalFill)                
+print("proportion halo hits",haloHits*100.0/dataPixelHistoRaw.GetEntries())
+print("less than 4keV",lessThan6keV*100.0/totalFill)                
             

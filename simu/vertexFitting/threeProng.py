@@ -3,11 +3,11 @@ import math
 import sys
 import os
 import numpy as np
-from ROOT import gROOT, TCanvas,TH1D,TH2D,TFile,TStyle,TLegend,TPave,TPaveStats,TPad,TPaveLabel,gStyle,gPad,TPaletteAxis,TLine
+from ROOT import gROOT, TCanvas,TH1D,TH2D,TFile,TStyle,TLegend,TPave,TPaveStats,TPad,TPaveLabel,gStyle,gPad,TPaletteAxis,TLine,TLatex
 gROOT.Reset()
 from scipy import stats
-import sympy
-from sympy import *
+#import sympy
+#from sympy import *
 import math
 import scipy.odr.odrpack as odrpack
 from numpy import polyfit
@@ -25,7 +25,6 @@ histo=TH2D("","",twodbin,twodstart,twodstop,twodbin,twodstart,twodstop)
 histo1D=TH1D("","",onedbin,onedstart,onedstop)
 histoSimple=TH2D("","",twodbin,twodstart,twodstop,twodbin,twodstart,twodstop)
 histoSimple1D=TH1D("","",onedbin,onedstart,onedstop)
-
 
 def findClosestToNintyAngle(t,a):
     i=a.index(min(a))
@@ -73,9 +72,11 @@ y=[]
 a=[]
 residual=[]
 residualSimple=[]
+antallEvents=0
 for line in open(sys.argv[1],'r'):
     data=line.split()
     if data[0]=="end":
+        antallEvents+=1
         xt=float(data[1])
         yt=float(data[2])
         xm=float(data[3])
@@ -103,7 +104,7 @@ for line in open(sys.argv[1],'r'):
 residual=np.array(residual)
 residual = residual[np.isfinite(residual)]
 residual.sort()
-proportion=len(residual)/20000.0
+proportion=len(residual)/40000.0
 print "vertex fitting method"
 print proportion
 print residual[int(len(residual)*0.68)]
@@ -131,12 +132,12 @@ histo.Draw("colz")
 histo.Scale(1.0/(twodsize*twodsize))
 histo.GetXaxis().SetTitle("Residual [#mum]")
 histo.GetYaxis().SetTitle("Residual [#mum]")
-histo.GetXaxis().SetTitleSize(0.05)
-histo.GetYaxis().SetTitleSize(0.05)
-histo.GetXaxis().SetLabelSize(0.045)
-histo.GetYaxis().SetLabelSize(0.045)
-histo.GetXaxis().SetTitleOffset(1.1)
-histo.GetYaxis().SetTitleOffset(1.1)
+histo.GetXaxis().SetTitleSize(0.072)
+histo.GetYaxis().SetTitleSize(0.072)
+histo.GetXaxis().SetTitleOffset(0.95)
+histo.GetYaxis().SetTitleOffset(0.95)
+histo.GetXaxis().SetLabelSize(0.05)
+histo.GetYaxis().SetLabelSize(0.05)
 #histo.GetZaxis().SetTitle("Normalized frequency")
 #histo.GetZaxis().SetTitleSize(0.06)
 #histo.GetZaxis().SetTitleOffset(0.7)
@@ -144,6 +145,8 @@ gStyle.SetOptStat("")
 gStyle.SetFrameLineColor(0); 
 gPad.Update()
 palette=histo.GetListOfFunctions().FindObject("palette")
+can.SetRightMargin(0.2)
+can.SetLeftMargin(0.15)
 #can.SetRightMargin(0.2)
 #can.SetBottomMargin(0.15)
 #can.SetLeftMargin(0.15)
@@ -151,9 +154,9 @@ palette.SetX1NDC(0.75)
 palette.SetX2NDC(0.77)
 palette.SetY1NDC(0.15)
 palette.SetY2NDC(0.9)
-histo.GetZaxis().SetTitle("Frequency [1.0/#mum^2]")
-histo.GetZaxis().SetTitleSize(0.05)
-histo.GetZaxis().SetTitleOffset(1.3)
+histo.GetZaxis().SetTitle("Frequency [1.0/#mum^{2}]")
+histo.GetZaxis().SetTitleSize(0.072)
+histo.GetZaxis().SetTitleOffset(0.9)
 gPad.Modified()
 can.Print("../../../../timepixArticle/fig/2dfit.pdf")
 
@@ -163,14 +166,16 @@ canS=TCanvas()
 canS.SetBottomMargin(0.15)
 histoSimple.Draw("colz")
 histoSimple.Scale(1.0/(twodsize*twodsize))
-histoSimple.GetXaxis().SetTitle("Residual [#mum]")
-histoSimple.GetYaxis().SetTitle("Residual [#mum]")
-histoSimple.GetXaxis().SetTitleSize(0.05)
-histoSimple.GetYaxis().SetTitleSize(0.05)
-histoSimple.GetXaxis().SetLabelSize(0.045)
-histoSimple.GetYaxis().SetLabelSize(0.045)
-histoSimple.GetXaxis().SetTitleOffset(1.1)
-histoSimple.GetYaxis().SetTitleOffset(1.1)
+histoSimple.GetXaxis().SetTitle("Residual [um]")
+histoSimple.GetYaxis().SetTitle("Residual [um]")
+histoSimple.GetXaxis().SetTitleSize(0.072)
+histoSimple.GetYaxis().SetTitleSize(0.072)
+#histoSimple.GetXaxis().SetTitleFont(131)
+#histoSimple.GetYaxis().SetTitleFont(131)
+histoSimple.GetXaxis().SetLabelSize(0.05)
+histoSimple.GetYaxis().SetLabelSize(0.05)
+histoSimple.GetXaxis().SetTitleOffset(0.95)
+histoSimple.GetYaxis().SetTitleOffset(0.95)
 gStyle.SetOptStat("")
 gStyle.SetFrameLineColor(0); 
 gPad.Update()
@@ -181,9 +186,9 @@ palette.SetX1NDC(0.75)
 palette.SetX2NDC(0.77)
 palette.SetY1NDC(0.15)
 palette.SetY2NDC(0.9)
-histoSimple.GetZaxis().SetTitle("Frequency [1.0/#mum^2]")
-histoSimple.GetZaxis().SetTitleSize(0.05)
-histoSimple.GetZaxis().SetTitleOffset(1.3)
+histoSimple.GetZaxis().SetTitle("Frequency [1.0/#mum^{2}]")
+histoSimple.GetZaxis().SetTitleSize(0.072)
+histoSimple.GetZaxis().SetTitleOffset(0.9)
 gPad.Modified()
 canS.Print("../../../../timepixArticle/fig/2dfitSimple.pdf")
 
@@ -198,13 +203,15 @@ histo1D.Draw("histo")
 histo1D.Scale(1.0/onedsize)
 histo1D.GetXaxis().SetTitle("Residual [#mum]")
 histo1D.GetYaxis().SetTitle("Frequency [1.0/#mum]")
-histo1D.GetXaxis().SetTitleSize(0.05)
-histo1D.GetYaxis().SetTitleSize(0.05)
-histo1D.GetXaxis().SetLabelSize(0.045)
-histo1D.GetYaxis().SetLabelSize(0.045)
+histo1D.GetXaxis().SetTitleSize(0.072)
+histo1D.GetYaxis().SetTitleSize(0.072)
+#histo1D.GetXaxis().SetTitleFont(131)
+#histo1D.GetYaxis().SetTitleFont(131)
+histo1D.GetXaxis().SetLabelSize(0.05)
+histo1D.GetYaxis().SetLabelSize(0.05)
 
-histo1D.GetXaxis().SetTitleOffset(1.1)
-histo1D.GetYaxis().SetTitleOffset(1.1)
+histo1D.GetXaxis().SetTitleOffset(0.95)
+histo1D.GetYaxis().SetTitleOffset(0.95)
 can1.Print("../../../../timepixArticle/fig/1dfit.pdf")
 
 
@@ -213,17 +220,21 @@ can1.Print("../../../../timepixArticle/fig/1dfit.pdf")
 gStyle.SetFrameLineColor(0); 
 can1=TCanvas()
 can1.SetBottomMargin(0.15)
-can1.SetLeftMargin(0.15)
+can1.SetLeftMargin(0.2)
 histoSimple1D.Draw("histo")
 histoSimple1D.Scale(1.0/onedsize)
 histoSimple1D.GetXaxis().SetTitle("Residual [#mum]")
 histoSimple1D.GetYaxis().SetTitle("Frequency [1.0/#mum]")
-histoSimple1D.GetXaxis().SetTitleSize(0.05)
-histoSimple1D.GetYaxis().SetTitleSize(0.05)
-histoSimple1D.GetXaxis().SetLabelSize(0.045)
-histoSimple1D.GetYaxis().SetLabelSize(0.045)
-histoSimple1D.GetXaxis().SetTitleOffset(1.1)
-histoSimple1D.GetYaxis().SetTitleOffset(1.1)
+histoSimple1D.GetXaxis().SetTitleSize(0.072)
+histoSimple1D.GetYaxis().SetTitleSize(0.072)
+#histoSimple1D.GetXaxis().SetTitleFont(131)
+#histoSimple1D.GetYaxis().SetTitleFont(131)
+
+histoSimple1D.GetXaxis().SetLabelSize(0.05)
+histoSimple1D.GetYaxis().SetLabelSize(0.05)
+histoSimple1D.GetXaxis().SetTitleOffset(0.95)
+histoSimple1D.GetYaxis().SetTitleOffset(0.95)
+
 can1.Print("../../../../timepixArticle/fig/1dfitSimple.pdf")
 
 
@@ -248,3 +259,4 @@ can1.Print("../../../../timepixArticle/fig/1dfitSimple.pdf")
 # print "hvor stor andel tilpasset", len(resultsSimple)*1.0/40000
 # print "estimated sigma", resultsSimple[int(len(resultsSimple)*0.68)]
 # print "estimated sigma 2D", resultsSimple2D[int(len(resultsSimple2D)*0.68)]
+print "totalt antall events",antallEvents

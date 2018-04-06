@@ -24,8 +24,9 @@ def calculateChiSquared(histosim,histos,histob,combined,p):
 
 
 
-def makeCombinedPlot(histosim,histos,histob,combined,yrange,log,name,xaxis,scale,pnumber):
+def makeCombinedPlot(histosim,histos,histob,combined,yrange,log,name,xaxis,scale,pnumber,doubleLabel):
     can=TCanvas()
+    can.SetLeftMargin(0.2)
     #histos.Sumw2()
     histosim.Draw("HIST")
     histosim.Scale((1.0-pnumber)*histos.Integral()/histosim.Integral())
@@ -33,98 +34,116 @@ def makeCombinedPlot(histosim,histos,histob,combined,yrange,log,name,xaxis,scale
     histob.Scale(pnumber*histos.Integral()/histob.Integral())
     for i in range(histos.GetXaxis().GetNbins()+2):
         combined.SetBinContent(i,histob.GetBinContent(i)+histosim.GetBinContent(i))
-    legend =TLegend(0.3,0.7,0.9,0.9);
+
+    if doubleLabel:
+        legend =TLegend(0.5,0.55,0.9,0.9);
+        legend.AddEntry(combined,"#splitline{Simulation+}{Reference sample}")
+    else:
+        legend =TLegend(0.27,0.7,0.9,0.9);
+        legend.AddEntry(combined,"Simulation+Reference sample")
+  
     gStyle.SetOptStat("");
-    legend.AddEntry(histos,"Main data-sample")
+    legend.AddEntry(histos,"Main data sample")
     legend.AddEntry(histob,"Reference sample")
-    legend.AddEntry(combined,"Simulation+ Reference sample")
     histos.SetLineWidth(3)
     #histob.SetLineWidth(3)
     #combined.SetLineWidth(3)
-    histos.SetLineColor(2)
-    combined.SetFillStyle(3005)
+    histos.SetLineColor(1)
+    combined.SetFillStyle(3690)
     #if log==False:
     #    histos.GetYaxis().SetRangeUser(0,yrange)
-    combined.SetLineColor(4)
-    histob.SetFillColor(3)
+    #combined.SetLineColor(399)
+    
+    histob.SetFillColorAlpha(596,1)
     #histob.SetFillColorAlpha(3,0.5)
     #histob.SetLineColor(3)
     combined.GetYaxis().SetRangeUser(10,scale*combined.GetMaximum())
-    combined.SetFillColor(4)
+    combined.SetFillColor(840)
     combined.GetXaxis().SetTitle(xaxis)
     combined.GetYaxis().SetTitle("Frequency")
-    combined.GetXaxis().SetTitleSize(0.05)
-    combined.GetYaxis().SetTitleSize(0.05)
-    combined.GetYaxis().SetLabelSize(0.045)
-    combined.GetXaxis().SetLabelSize(0.045)
+    combined.GetXaxis().SetTitleSize(0.072)
+    combined.GetYaxis().SetTitleSize(0.072)
+    #combined.GetXaxis().SetTitleFont(131)
+    #combined.GetYaxis().SetTitleFont(131)
+    combined.GetYaxis().SetLabelSize(0.05)
+    combined.GetXaxis().SetLabelSize(0.05)
+    combined.GetXaxis().SetTitleOffset(0.83)
+    
     combined.GetXaxis().SetNdivisions(5)
     combined.Draw()
     histob.Draw("hist same")
     histos.Draw("E1 same")
     #histosim.Draw("same")
+    #legend.SetTextFont(131)
+    legend.SetTextSize(0.055)
     legend.Draw("same")
+    can.SetBottomMargin(0.14)
     if log==True:
         can.SetLogy()
     can.Print("../../../timepixArticle/fig/compare/"+str(name)+".pdf")
 
 
 
-def makeCombinedPlotTagged(histosim,histos,histob,combined,originsim,origins,originb,yrange,log,name,xaxis,scale,pnumber):
-    simuT=originsim.Clone()
-    bacT=origins.Clone()
-    originsim.Scale((1.0-pnumber)*origins.Integral()/originsim.Integral())
-    originb.Scale(pnumber*origins.Integral()/originb.Integral())
-    can=TCanvas()
-    originsim.Draw("HIST")
-    for i in range(histos.GetXaxis().GetNbins()+2):
-        if simuT.GetBinContent(i)==0 or bacT.GetBinContent(i)==0:
-            combined.SetBinContent(i,0)
-        else:
-            simu=originsim.GetBinContent(i)*histosim.GetBinContent(i)*1.0/simuT.GetBinContent(i)
-            background=originb.GetBinContent(i)*histob.GetBinContent(i)*1.0/bacT.GetBinContent(i)
-            #print origins.GetBinContent(i),originb.GetBinContent(i),originsim.GetBinContent(i)
-            #print "simu, background",simu,background
-            combined.SetBinContent(i,simu+background)
-            histob.SetBinContent(i,background)
-    legend =TLegend(0.3,0.7,0.9,0.9);
-    gStyle.SetOptStat("");
-    legend.AddEntry(histos,"Main data-sample")
-    legend.AddEntry(histob,"Reference sample")
-    legend.AddEntry(combined,"Simulation+ Reference sample")
-    #legend =TLegend(0.6,0.7,0.9,0.9);
-    #gStyle.SetOptStat("");
-    #legend.AddEntry(histos,"Data")
-    #legend.AddEntry(histob,"Fragments")
-    #legend.AddEntry(combined,"SimuP + Fragments")
-    histos.SetLineWidth(3)
-    #histob.SetLineWidth(3)
-    #combined.SetLineWidth(3)
-    histos.SetLineColor(2)
-    combined.SetFillStyle(3005)
-    #if log==False:
-    #    histos.GetYaxis().SetRangeUser(0,yrange)
-    combined.SetLineColor(4)
-    histob.SetFillColor(3)
-    #histob.SetFillColorAlpha(3,0.5)
-    #histob.SetLineColor(3)
-    combined.GetYaxis().SetRangeUser(1,scale*combined.GetMaximum())
-    combined.SetFillColor(4)
-    combined.GetXaxis().SetTitle(xaxis)
-    combined.GetYaxis().SetTitle("Frequency")
-    combined.GetXaxis().SetTitleSize(0.05)
-    combined.GetYaxis().SetTitleSize(0.05)
-    combined.GetYaxis().SetLabelSize(0.045)
-    combined.GetXaxis().SetLabelSize(0.045)
-    combined.GetXaxis().SetNdivisions(5)
-    combined.Draw()
-    histob.Draw("hist same")
-    histos.Draw("E1 same")
-   # histosim.Draw("same")
+# def makeCombinedPlotTagged(histosim,histos,histob,combined,originsim,origins,originb,yrange,log,name,xaxis,scale,pnumber):
+#     simuT=originsim.Clone()
+#     bacT=origins.Clone()
+#     originsim.Scale((1.0-pnumber)*origins.Integral()/originsim.Integral())
+#     originb.Scale(pnumber*origins.Integral()/originb.Integral())
+#     can=TCanvas()
+#     originsim.Draw("HIST")
+#     for i in range(histos.GetXaxis().GetNbins()+2):
+#         if simuT.GetBinContent(i)==0 or bacT.GetBinContent(i)==0:
+#             combined.SetBinContent(i,0)
+#         else:
+#             simu=originsim.GetBinContent(i)*histosim.GetBinContent(i)*1.0/simuT.GetBinContent(i)
+#             background=originb.GetBinContent(i)*histob.GetBinContent(i)*1.0/bacT.GetBinContent(i)
+#             #print origins.GetBinContent(i),originb.GetBinContent(i),originsim.GetBinContent(i)
+#             #print "simu, background",simu,background
+#             combined.SetBinContent(i,simu+background)
+#             histob.SetBinContent(i,background)
+#     legend =TLegend(0.3,0.7,0.9,0.9);
+#     gStyle.SetOptStat("");
+#     legend.AddEntry(histos,"Main data-sample")
+#     legend.AddEntry(histob,"Reference sample")
+#     legend.AddEntry(combined,"Simulation+ Reference sample")
+#     #legend =TLegend(0.6,0.7,0.9,0.9);
+#     #gStyle.SetOptStat("");
+#     #legend.AddEntry(histos,"Data")
+#     #legend.AddEntry(histob,"Fragments")
+#     #legend.AddEntry(combined,"SimuP + Fragments")
+#     histos.SetLineWidth(3)
+#     #histob.SetLineWidth(3)
+#     #combined.SetLineWidth(3)
+#     histos.SetLineColor(1)
+#     combined.SetFillStyle(3409)
+#     #if log==False:
+#     #    histos.GetYaxis().SetRangeUser(0,yrange)
+#     combined.SetLineColor(5)
+#     histob.SetFillColorAlpha(56,1)
+#     #histob.SetFillColorAlpha(3,0.5)
+#     #histob.SetLineColor(3)
+#     combined.GetYaxis().SetRangeUser(1,scale*combined.GetMaximum())
+#     combined.SetFillColor(5)
+#     combined.GetXaxis().SetTitle(xaxis)
+#     combined.GetYaxis().SetTitle("Frequency")
+#     combined.GetXaxis().SetTitleSize(0.072)
+#     combined.GetYaxis().SetTitleSize(0.072)
+#     combined.GetXaxis().SetTitleFont(131)
+#     combined.GetYaxis().SetTitleFont(131)
+#     combined.GetYaxis().SetLabelSize(0.05)
+#     combined.GetXaxis().SetLabelSize(0.05)
     
-    legend.Draw("same")
-    if log==True:
-        can.SetLogy()
-    can.Print("../../../timepixArticle/fig/compare/"+str(name)+".pdf")
+#     combined.GetXaxis().SetNdivisions(5)
+#     combined.Draw()
+#     histob.Draw("hist same")
+#     histos.Draw("E1 same")
+#    # histosim.Draw("same")
+#     legend.SetTextFont(131)
+#     legend.SetTextSize(0.04)
+#     legend.Draw("same")
+#     if log==True:
+#         can.SetLogy()
+#     can.Print("../../../timepixArticle/fig/compare/"+str(name)+".pdf")
 
 
     
@@ -346,14 +365,15 @@ print "center",p3
 print "total",p4
 
 p=(p1+p2+p3+p4)/4.0
+print "average",p
 #p=0.78
 #p=p1
 print "linear combinatin",p
 print "ingegral before",simuSize.Integral()
-makeCombinedPlot(simuEnergy.Clone(),signalEnergy.Clone(),backgroundEnergy.Clone(),combiEnergy.Clone(),1,True,"centerEnergy","keV",2,p)
-makeCombinedPlot(simuProng.Clone(),signalProng.Clone(),backgroundProng.Clone(),combiProng.Clone(),1,True,"prongs","# prongs",5,p)
-makeCombinedPlot(simuSize.Clone(),signalSize.Clone(),backgroundSize.Clone(),combiSize.Clone(),1,True,"size","# pixels",2,p)
-makeCombinedPlot(simuTotalCharge.Clone(),signalTotalCharge.Clone(),backgroundTotalCharge.Clone(),combiTotalCharge.Clone(),1,True,"charge","keV",2,p)
+makeCombinedPlot(simuEnergy.Clone(),signalEnergy.Clone(),backgroundEnergy.Clone(),combiEnergy.Clone(),1,True,"centerEnergy","keV",2,p,True)
+makeCombinedPlot(simuProng.Clone(),signalProng.Clone(),backgroundProng.Clone(),combiProng.Clone(),1,True,"prongs","# prongs",20,p,True)
+makeCombinedPlot(simuSize.Clone(),signalSize.Clone(),backgroundSize.Clone(),combiSize.Clone(),1,True,"size","# pixels",5,p,True)
+makeCombinedPlot(simuTotalCharge.Clone(),signalTotalCharge.Clone(),backgroundTotalCharge.Clone(),combiTotalCharge.Clone(),1,True,"charge","keV",10,p,True)
 print "integral after",simuSize.Integral()
 
 p=0
@@ -382,7 +402,7 @@ print "minimum p",p
 
 
 
-makeCombinedPlot(simuSizeTagged.Clone(),signalSizeTagged.Clone(),backgroundSizeTagged.Clone(),combiSizeTagged.Clone(),1,True,"sizeTagged","# pixels",10,p)
-makeCombinedPlot(simuEnergyTagged.Clone(),signalEnergyTagged.Clone(),backgroundEnergyTagged.Clone(),combiEnergyTagged.Clone(),1,True,"centerEnergyTagged","keV",10,p)
-makeCombinedPlot(simuProngTagged.Clone(),signalProngTagged.Clone(),backgroundProngTagged.Clone(),combiProngTagged.Clone(),1,True,"prongsTagged","# prongs",30,p)
-makeCombinedPlot(simuTotalChargeTagged.Clone(),signalTotalChargeTagged.Clone(),backgroundTotalChargeTagged.Clone(),combiTotalChargeTagged.Clone(),1,True,"chargeTagged","keV",10,p)
+makeCombinedPlot(simuSizeTagged.Clone(),signalSizeTagged.Clone(),backgroundSizeTagged.Clone(),combiSizeTagged.Clone(),1,True,"sizeTagged","# pixels",10,p,False)
+makeCombinedPlot(simuEnergyTagged.Clone(),signalEnergyTagged.Clone(),backgroundEnergyTagged.Clone(),combiEnergyTagged.Clone(),1,True,"centerEnergyTagged","keV",10,p,False)
+makeCombinedPlot(simuProngTagged.Clone(),signalProngTagged.Clone(),backgroundProngTagged.Clone(),combiProngTagged.Clone(),1,True,"prongsTagged","# prongs",30,p,False)
+makeCombinedPlot(simuTotalChargeTagged.Clone(),signalTotalChargeTagged.Clone(),backgroundTotalChargeTagged.Clone(),combiTotalChargeTagged.Clone(),1,True,"chargeTagged","keV",10,p,False)

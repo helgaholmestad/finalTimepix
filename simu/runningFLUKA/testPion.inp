@@ -3,7 +3,7 @@ TITLE
 * Set the defaults for precision simulations
 DEFAULTS                                                              PRECISIO
 * Define the beam characteristics
-BEAM            -0.2       0.0       0.0       0.0       0.0        1.PION+
+BEAM           -0.35       0.0       0.0       0.0       0.0        1.PION+
 * Define the beam position
 BEAMPOS          0.0       0.0    -2.107       0.0       0.0
 PHYSICS                                                               COALESCE
