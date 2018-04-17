@@ -263,12 +263,12 @@ for k in range(1,len(tfile.GetListOfKeys()),1):
     meta.write("error "+str(error)+"\n")
     
     prongs.write("numberOfProngs "+str(prong)+"\n")
-    if prong>1:# and center[1]>800:
-        meta.write("trough"+'\n')
-        prongs.write("trough"+'\n')
-    else:
-        meta.write("notTrough"+'\n')
-        prongs.write("notTrough"+'\n')
+    #if prong>0 and >800:
+    #    meta.write("trough"+'\n')
+    prongs.write("done"+'\n')
+    #else:
+    #    meta.write("notTrough"+'\n')
+    #    prongs.write("notTrough"+'\n')
     event +=1
     
 
