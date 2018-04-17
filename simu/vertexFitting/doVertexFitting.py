@@ -5,6 +5,7 @@ import os
 import numpy as np
 from ROOT import gROOT, TCanvas,TH1D,TH2D,TFile,TStyle,TLegend,TPave,TPaveStats,TPad,TPaveLabel,gStyle,gPad,TPaletteAxis,TLine
 gROOT.Reset()
+import scipy.optimize as opt
 from scipy import stats
 #import sympy
 #from sympy import *
@@ -13,7 +14,30 @@ import scipy.odr.odrpack as odrpack
 from numpy import polyfit
 from math import fabs
 from math import sqrt
-#list of tracks contains for each event the  a list of the pixels 
+#list of tracks contains for each event the  a list of the pixels
+
+def fv(B,x,a1,b1):
+    return B[0]*x+b1-B[0]*a1
+
+def minThis(vertex,trackArray):
+    sumOfSquares=0
+    for i in range(len(trackArray)):
+        x=[]
+        y=[]
+        energy=[]
+        #print trackArray
+        for i in trackArray[i]:
+            x.append(i[0])
+            y.append(i[1])
+            energy.append(i[2])
+        slope, intercept, r_value, p_value, std_err = stats.linregress(x,y)
+        mydata=odrpack.Data(x,y,energy,energy)
+        linear =odrpack.Model(fv,extra_args=vertex)
+        myodr=odrpack.ODR(mydata,linear,beta0=[slope,intercept])
+        myoutput= myodr.run()
+        sumOfSquares+=myoutput.sum_square
+    return sumOfSquares
+
 
 def f(B,x):
     return B[0]*x+B[1]
@@ -58,17 +82,7 @@ resultsSimple2D=[]
 results=[]
 resultsSimple=[]
 resultsCombined=[]
-onedstart=-300
-onedstop=300
-onedbin=250
-twodstart=-250
-twodstop=250
-twodbin=100
-histo=TH2D("","",twodbin,twodstart,twodstop,twodbin,twodstart,twodstop)
-histo1D=TH1D("","",onedbin,onedstart,onedstop)
-histoSimple=TH2D("","",twodbin,twodstart,twodstop,twodbin,twodstart,twodstop)
-histoSimple1D=TH1D("","",onedbin,onedstart,onedstop)
-event=0
+
 def lengthOfTracs(prong):
     maxx=0
     minx=1000
@@ -99,17 +113,6 @@ def averageEnergyPerPixel(prong1,prong2):
     return totalEnergy*1.0/(len(prong1)+len(prong2))
 
 
-
-def debutPrint(angle,prong1,prong2):
-    can=TCanvas()
-    histo=TH2D(str(angle),str(angle),256,0,256,256,0,256)
-    for i in prong1:
-        histo.Fill(i[0],i[1],i[2])
-    for i in prong2:
-        histo.Fill(i[0],i[1],i[2])
-    histo.Draw("colz")
-    can.Print("fig/"+str(angle)+".png")
-    
 def angleBetween(x,y,fit1,fit2,prong1,prong2):
     m1=(fit1[0][0])
     m2=(fit2[0][0])
@@ -162,6 +165,8 @@ for line in open("truthValues.txt",'r'):
 event=-1
 antall=0
 
+sameVertex=True
+
 file=open("corrData.txt",'w')
 allResults=open("allResults.txt",'w')
 for line in open(sys.argv[1],'r'):
@@ -173,10 +178,6 @@ for line in open(sys.argv[1],'r'):
         massCentery=float(columns[2])
         centerx=(float(columns[1])-truthDict[event][0])*55.0
         centery=(float(columns[2])-truthDict[event][1])*55.0
-        if centerx<225:
-            histoSimple.Fill(centerx,centery)
-        histoSimple1D.Fill(centerx)
-        histoSimple1D.Fill(centery)
         resultsSimple.append(np.abs(centerx))
         resultsSimple.append(np.abs(centery))
         resultsSimple2D.append(np.sqrt(centerx*centerx+centery*centery))
@@ -187,156 +188,21 @@ for line in open(sys.argv[1],'r'):
         listOfTracks.append(track)
         track=[]
     if columns[0]=="trough":
+        print "how many tracks",len(listOfTracks)
+        allResults.write("start  "+str(truthDict[event][0])+"  "+str(truthDict[event][1])+"  "+str(massCenterx)+"  "+str(massCentery)+"\n")
         if len(listOfTracks)<2:
             listOfTracks=[]
-            continue            
-        theVertex= findVertex(listOfTracks,massCenterx,massCentery,truthDict[event][0],truthDict[event][1])
-        allResults.write("end  "+str(truthDict[event][0])+"  "+str(truthDict[event][1])+"  "+str(massCenterx)+"  "+str(massCentery)+"\n")
+            continue
+        if sameVertex:
+            theVertex=opt.minimize(minThis,[massCenterx,massCentery],args=(listOfTracks))
+            allResults.write(str(theVertex.x[0])+"  "+str(theVertex.x[1])+"\n")    
+            print event
+        else:
+            theVertex= findVertex(listOfTracks,massCenterx,massCentery,truthDict[event][0],truthDict[event][1])
         if theVertex==None:
             listOfTracks=[]
             continue
-        distancex,distancey,angle,fit1,fit2=theVertex
-        distancex=(distancex-truthDict[event][0])*55.0
-        distancey=(distancey-truthDict[event][1])*55.0
-        histo1D.Fill(distancex)
-        histo1D.Fill(distancey)
-        histo.Fill(distancex,distancey)
-        results.append(np.abs(distancex))
-        results.append(np.abs(distancey))
-        results2D.append(np.sqrt(distancex*distancex+distancey*distancey))
-        resultsCombined.append(np.abs(centerx+distancex)*0.5)
-        resultsCombined.append(np.abs(centery+distancey)*0.5)
         listOfTracks=[]
     if columns[0]=="notTrough":
         listOfTracks=[]
-print "antall gode", antall
-gStyle.SetOptStat("");        
-gStyle.SetFrameLineColor(0); 
-
-twodsize=1.0*(twodstop-twodstart)/twodbin
-onedsize=1.0*(onedstop-onedstart)/onedbin
-can=TCanvas()
-can.SetLeftMargin(0.12)
-can.SetRightMargin(0.2)
-can.SetBottomMargin(0.15)
-histo.Draw("colz")
-histo.Scale(1.0/(twodsize*twodsize))
-histo.GetXaxis().SetTitle("Residual [#mum]")
-histo.GetYaxis().SetTitle("Residual [#mum]")
-histo.GetXaxis().SetTitleSize(0.05)
-histo.GetYaxis().SetTitleSize(0.05)
-histo.GetXaxis().SetLabelSize(0.045)
-histo.GetYaxis().SetLabelSize(0.045)
-histo.GetXaxis().SetTitleOffset(1.1)
-histo.GetYaxis().SetTitleOffset(1.1)
-#histo.GetZaxis().SetTitle("Normalized frequency")
-#histo.GetZaxis().SetTitleSize(0.06)
-#histo.GetZaxis().SetTitleOffset(0.7)
-gStyle.SetOptStat("")
-gStyle.SetFrameLineColor(0); 
-gPad.Update()
-palette=histo.GetListOfFunctions().FindObject("palette")
-gPad.Update()
-#can.SetRightMargin(0.2)
-#can.SetBottomMargin(0.15)
-#can.SetLeftMargin(0.15)
-palette.SetX1NDC(0.75)
-palette.SetX2NDC(0.77)
-palette.SetY1NDC(0.15)
-palette.SetY2NDC(0.9)
-histo.GetZaxis().SetTitle("Frequency [1.0/#mum^2]")
-histo.GetZaxis().SetTitleSize(0.05)
-histo.GetZaxis().SetTitleOffset(1.3)
-gPad.Modified()
-can.Print("../../fig/2dfit.pdf")
-
-
-
-canS=TCanvas()
-canS.SetBottomMargin(0.15)
-histoSimple.Draw("colz")
-histoSimple.Scale(1.0/(twodsize*twodsize))
-histoSimple.GetXaxis().SetTitle("Residual [#mum]")
-histoSimple.GetYaxis().SetTitle("Residual [#mum]")
-histoSimple.GetXaxis().SetTitleSize(0.05)
-histoSimple.GetYaxis().SetTitleSize(0.05)
-histoSimple.GetXaxis().SetLabelSize(0.045)
-histoSimple.GetYaxis().SetLabelSize(0.045)
-histoSimple.GetXaxis().SetTitleOffset(1.1)
-histoSimple.GetYaxis().SetTitleOffset(1.1)
-gStyle.SetOptStat("")
-gStyle.SetFrameLineColor(0); 
-gPad.Update()
-palette=histoSimple.GetListOfFunctions().FindObject("palette")
-canS.SetRightMargin(0.2)
-canS.SetLeftMargin(0.15)
-palette.SetX1NDC(0.75)
-palette.SetX2NDC(0.77)
-palette.SetY1NDC(0.15)
-palette.SetY2NDC(0.9)
-histoSimple.GetZaxis().SetTitle("Frequency [1.0/#mum^2]")
-histoSimple.GetZaxis().SetTitleSize(0.05)
-histoSimple.GetZaxis().SetTitleOffset(1.3)
-gPad.Modified()
-canS.Print("../../fig/2dfitSimple.pdf")
-
-
-
-
-gStyle.SetFrameLineColor(0); 
-can1=TCanvas()
-can1.SetBottomMargin(0.15)
-can1.SetLeftMargin(0.15)
-histo1D.Draw("histo")
-histo1D.Scale(1.0/onedsize)
-histo1D.GetXaxis().SetTitle("Residual [#mum]")
-histo1D.GetYaxis().SetTitle("Frequency [1.0/#mum]")
-histo1D.GetXaxis().SetTitleSize(0.05)
-histo1D.GetYaxis().SetTitleSize(0.05)
-histo1D.GetXaxis().SetLabelSize(0.045)
-histo1D.GetYaxis().SetLabelSize(0.045)
-
-histo1D.GetXaxis().SetTitleOffset(1.1)
-histo1D.GetYaxis().SetTitleOffset(1.1)
-can1.Print("../../fig/1dfit.pdf")
-
-
-
-
-gStyle.SetFrameLineColor(0); 
-can1=TCanvas()
-can1.SetBottomMargin(0.15)
-can1.SetLeftMargin(0.15)
-histoSimple1D.Draw("histo")
-histoSimple1D.Scale(1.0/onedsize)
-histoSimple1D.GetXaxis().SetTitle("Residual [#mum]")
-histoSimple1D.GetYaxis().SetTitle("Frequency [1.0/#mum]")
-histoSimple1D.GetXaxis().SetTitleSize(0.05)
-histoSimple1D.GetYaxis().SetTitleSize(0.05)
-histoSimple1D.GetXaxis().SetLabelSize(0.045)
-histoSimple1D.GetYaxis().SetLabelSize(0.045)
-histoSimple1D.GetXaxis().SetTitleOffset(1.1)
-histoSimple1D.GetYaxis().SetTitleOffset(1.1)
-can1.Print("../../fig/1dfitSimple.pdf")
-
-
-
-
-squaredResults=np.square(results)
-squaredResults.sort()
-print "rms",np.sqrt(sum(squaredResults)*1.0/(len(squaredResults)))
-
-results.sort()
-results2D.sort()
-print "hvor mange er tilpasset",len(results)
-print "hvor stor andel tilpasset", len(results)*1.0/20000
-print "estimated sigma", results[int(len(results)*0.68)]
-print "estimated sigma 2d", results2D[int(len(results2D)*0.68)]
-
-
-resultsSimple.sort()
-resultsSimple2D.sort()
-print "hvor mange er tilpasset",len(resultsSimple)
-print "hvor stor andel tilpasset", len(resultsSimple)*1.0/20000
-print "estimated sigma", resultsSimple[int(len(resultsSimple)*0.68)]
-print "estimated sigma 2D", resultsSimple2D[int(len(resultsSimple2D)*0.68)]
+        
