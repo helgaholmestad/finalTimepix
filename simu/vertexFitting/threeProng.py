@@ -43,10 +43,11 @@ def processOneEvent(x,y,tx,ty,xm,ym,a):
         estimatex,estimatey=findEstimate(x,y,xm,ym,a)
     if estimatex==None or estimatey==None:
         return None,None
-    if findDistanceToMassCenter(estimatex,estimatey,xm,ym)>110.0:
-        return None,None
+    #if findDistanceToMassCenter(estimatex,estimatey,xm,ym)>110.0:
+    #    return None,None
     residualx=estimatex-tx
     residualy=estimatey-ty
+    print residualx,residualy
     return residualx,residualy
 
 
@@ -75,8 +76,16 @@ residualSimple=[]
 antallEvents=0
 for line in open(sys.argv[1],'r'):
     data=line.split()
-    if data[0]=="end":
-        antallEvents+=1
+    if data[0]=="start":
+        print "her"
+        if len(x)!=0:
+            rx,ry=processOneEvent(x,y,xt,yt,xm,ym,a)
+            if rx!=None and ry!=None:
+                residual.append(abs(ry*55.0))
+                residual.append(abs(rx*55.0))
+                histo.Fill(rx*55.0,ry*55.0)
+                histo1D.Fill(rx*55.0)
+                histo1D.Fill(ry*55.0)
         xt=float(data[1])
         yt=float(data[2])
         xm=float(data[3])
@@ -86,27 +95,22 @@ for line in open(sys.argv[1],'r'):
         histoSimple1D.Fill((ym-yt)*55.0)
         residualSimple.append(abs((xm-xt)*55.0))
         residualSimple.append(abs((ym-yt)*55.0))
-        rx,ry=processOneEvent(x,y,xt,yt,xm,ym,a)
+        antallEvents+=1
+        #rx,ry=processOneEvent(x,y,xt,yt,xm,ym,a)
         x=[]
         y=[]
         a=[]
-        if rx==None or ry==None:
-            continue
-        histo.Fill(rx*55.0,ry*55.0)
-        histo1D.Fill(rx*55.0)
-        histo1D.Fill(ry*55.0)  
-        residual.append(abs(rx*55.0))
-        residual.append(abs(ry*55.0))
         continue
     x.append(float(data[0]))
     y.append(float(data[1]))
-    a.append(float(data[2]))
+    #a.append(float(data[2]))
 residual=np.array(residual)
 residual = residual[np.isfinite(residual)]
 residual.sort()
-proportion=len(residual)/40000.0
+print residual
+proportion=len(residual)/20000.0
 print "vertex fitting method"
-print proportion
+print len(residual)
 print residual[int(len(residual)*0.68)]
 residualSimple=np.array(residualSimple)
 residualSimple = residualSimple[np.isfinite(residualSimple)]
@@ -129,6 +133,7 @@ can.SetLeftMargin(0.12)
 can.SetRightMargin(0.2)
 can.SetBottomMargin(0.15)
 histo.Draw("colz")
+input()
 histo.Scale(1.0/(twodsize*twodsize))
 histo.GetXaxis().SetTitle("Residual [#mum]")
 histo.GetYaxis().SetTitle("Residual [#mum]")
