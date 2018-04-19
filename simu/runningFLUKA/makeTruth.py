@@ -14,7 +14,7 @@ dc= .01*.0055
 ###       1635 1485    0     5.3
 # ---
 
-outfile=open("truthValues.txt","w")
+outfile=open(sys.argv[2],"w")
 foundFirst=False
 #inputfile = 'exam2001.log'
 variables=[] 
@@ -51,7 +51,7 @@ def readOneFile(file):
 
 
 for  i in ["010","001","002","003","004","005","006","007","008","009"]:
-    readOneFile(str("supersimpelTimepixCenter"+i+".log"))
+    readOneFile(str("supersimpelTimepix"+sys.argv[1]+i+".log"))
     
 #readOneFile(str("supersimpelTimepixCenter001.log"))
                     

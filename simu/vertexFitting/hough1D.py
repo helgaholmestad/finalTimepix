@@ -224,7 +224,7 @@ for k in range(1,len(tfile.GetListOfKeys()),1):
     if histogramD==None:
         prongs.write("None\n")
         continue
-    if histogramD.GetEntries()==0:
+    if histogramD.GetEntries()<70:
         prongs.write("new cluster\n")
         continue
     histogram=histogramD.Clone()
@@ -261,7 +261,6 @@ for k in range(1,len(tfile.GetListOfKeys()),1):
     meta.write("prong "+str(prong)+"\n")
     meta.write("clusterCharge "+str(clusterCharge) +"\n")
     meta.write("error "+str(error)+"\n")
-    
     prongs.write("numberOfProngs "+str(prong)+"\n")
     #if prong>0 and >800:
     #    meta.write("trough"+'\n')
