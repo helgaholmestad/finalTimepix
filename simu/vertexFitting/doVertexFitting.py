@@ -156,7 +156,7 @@ def findVertex(listOfTracks,centerx,centery,truthx,truthy):
     return bestValue[0],bestValue[1],angle,fit1,fit2
 
 truthDict={}
-for line in open("truthValues.txt",'r'):
+for line in open(sys.argv[2],'r'):
     values=line.split()
     event=int(values[0])
     truth=(float(values[1]),float(values[2]))
@@ -187,7 +187,7 @@ for line in open(sys.argv[1],'r'):
     if columns[0]=="pixelsInProng":
         listOfTracks.append(track)
         track=[]
-    if columns[0]=="trough":
+    if columns[0]=="done":
         print "how many tracks",len(listOfTracks)
         allResults.write("start  "+str(truthDict[event][0])+"  "+str(truthDict[event][1])+"  "+str(massCenterx)+"  "+str(massCentery)+"\n")
         if len(listOfTracks)<2:
@@ -202,7 +202,5 @@ for line in open(sys.argv[1],'r'):
         if theVertex==None:
             listOfTracks=[]
             continue
-        listOfTracks=[]
-    if columns[0]=="notTrough":
         listOfTracks=[]
         

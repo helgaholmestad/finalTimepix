@@ -63,7 +63,7 @@ def findEstimate(x,y,mx,my,a):
             bestIndex=t
         xnew=[x[i] for i in bestIndex]
         ynew=[y[i] for i in bestIndex]
-    print "find sum of",xnew,ynew
+    print "send",x,a
     if len(xnew)==1:
         return findClosestToNintyAngle(x,a),findClosestToNintyAngle(y,a)
         #return findClosestToMassCenter(x,mx),findClosestToMassCenter(y,my)
@@ -110,13 +110,13 @@ residual.sort()
 print residual
 proportion=len(residual)/20000.0
 print "vertex fitting method"
-print len(residual)
+print proportion
 print residual[int(len(residual)*0.68)]
 residualSimple=np.array(residualSimple)
 residualSimple = residualSimple[np.isfinite(residualSimple)]
 residualSimple.sort()
 print "mass center method"
-print len(residualSimple)
+print len(residualSimple)/proportion
 print residualSimple[int(len(residualSimple)*0.68)]
 
 

@@ -8,8 +8,8 @@ BEAM          -1E-05       0.0       0.0       0.5       0.5        1.APROTON
 BEAMPOS          0.0       0.0       -2.       0.0       0.0
 PHYSICS                                                               COALESCE
 PHYSICS           3.                                                  EVAPORAT
-EMFCUT        -1E-06                       BLKBODY  @LASTREG
-EMFCUT        -1E-06                                                  PROD-CUT
+EMFCUT        -1E-06  0.000001             BLKBODY  @LASTREG
+EMFCUT        -1E-06  0.000001                                        PROD-CUT
 GEOBEGIN                                                              COMBNAME
     0    0          
 * Void sphere

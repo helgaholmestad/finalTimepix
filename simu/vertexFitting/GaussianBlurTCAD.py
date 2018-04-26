@@ -5,12 +5,12 @@ import numpy as np
 from math import exp
 from math import sqrt
 import matplotlib.pyplot as plt
-file=open("datafiles/"+sys.argv[2]+"results.txt",'w')
-fileEnergy=open("datafiles/"+sys.argv[2]+"energyAround.txt",'w')
+file=open("datafiles"+sys.argv[3]+"/"+sys.argv[2]+"results.txt",'w')
+fileEnergy=open("datafiles"+sys.argv[3]+"/"+sys.argv[2]+"energyAround.txt",'w')
 hasStarted=False
 eventNumber=0
 pixelNumber=0
-myFile=TFile("datafiles/histogramsTCADRaw"+sys.argv[2]+".root","RECREATE")
+myFile=TFile("datafiles"+sys.argv[3]+"/histogramsTCADRaw"+sys.argv[2]+".root","RECREATE")
 #myFile=TFile(sys.argv[1]+".root","RECREATE")
 finalData=TH2D("final","final",256,0,256,256,0,256)
 finalWithCut=TH2D("event0","event0",256,0,256,256,0,256)
