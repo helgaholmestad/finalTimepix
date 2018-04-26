@@ -103,7 +103,7 @@ for line in open(sys.argv[1],'r'):
         continue
     x.append(float(data[0]))
     y.append(float(data[1]))
-    #a.append(float(data[2]))
+    a.append(float(data[2]))
 residual=np.array(residual)
 residual = residual[np.isfinite(residual)]
 residual.sort()
@@ -133,7 +133,6 @@ can.SetLeftMargin(0.12)
 can.SetRightMargin(0.2)
 can.SetBottomMargin(0.15)
 histo.Draw("colz")
-input()
 histo.Scale(1.0/(twodsize*twodsize))
 histo.GetXaxis().SetTitle("Residual [#mum]")
 histo.GetYaxis().SetTitle("Residual [#mum]")

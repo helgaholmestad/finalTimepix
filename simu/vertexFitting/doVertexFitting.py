@@ -165,7 +165,7 @@ for line in open("truthValues.txt",'r'):
 event=-1
 antall=0
 
-sameVertex=True
+sameVertex=False
 
 file=open("corrData.txt",'w')
 allResults=open("allResults.txt",'w')
