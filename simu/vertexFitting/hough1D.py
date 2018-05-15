@@ -224,7 +224,7 @@ for k in range(1,len(tfile.GetListOfKeys()),1):
     if histogramD==None:
         prongs.write("None\n")
         continue
-    if histogramD.GetEntries()<70:
+    if histogramD.GetEntries()<71:
         prongs.write("new cluster\n")
         continue
     histogram=histogramD.Clone()

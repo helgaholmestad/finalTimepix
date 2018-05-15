@@ -6,7 +6,7 @@ from ROOT import gROOT, TCanvas,TH1D,TH2D,TFile,TStyle,TLegend,TPave,TPaveStats,
 gROOT.Reset()
 
 gStyle.SetOptStat("");
-histoPions=TH1D("","",30,0,30)
+histoPions=TH1D("","",60,0,30)
 hasStarted=False
 lessThan6keV=0
 totalFill=0
@@ -27,7 +27,7 @@ for line in open("../simu/runningFLUKA/testPion001_fort.22"):
                 lessThan6keV+=1  
 
 rootdir="/home/helga/TimepixArticle/data/newTimepixFiles/"
-dataPixelHistoRaw=TH1D("","",30,0,30)
+dataPixelHistoRaw=TH1D("","",60,0,30)
 
 for subdir, dirs, files in os.walk(rootdir):
     print(subdir)
@@ -43,8 +43,8 @@ for subdir, dirs, files in os.walk(rootdir):
                     haloHits+=1
 
 dataPixelHistoRaw.Draw()
-canvas2=TCanvas()
-
+canvas2=TCanvas(
+)
 #histoPions.GetXaxis().SetTitle("energy deposited in 20 um silicon [keV]")
 histoPions.GetXaxis().SetTitle("Measured energy deposition [keV]")
 histoPions.GetYaxis().SetTitle("Normalized frequency")
@@ -77,7 +77,7 @@ legend2 =TLegend(0.5,0.6,0.9,0.9);
 legend2.SetTextSize(0.043)
 #legend2.AddEntry(histoPions,"#splitline{A MIP transversing}{ 39.2 um of silicon}")
 #legend2.AddEntry(dataPixelHistoRaw,"#splitline{Energy measured in the}{ pixels for the main dataset}")
-legend2.AddEntry(histoPions,"#splitline{A MIP traversing}{39.2 um of silicon.}")
+legend2.AddEntry(histoPions,"#splitline{A MIP traversing}{38.9 um of silicon.}")
 legend2.AddEntry(dataPixelHistoRaw,"#splitline{Measured energy per}{#splitline{pixel for main dataset}{including the halo}}")
 #legend2.SetTextFont(131)
 legend2.Draw("same")

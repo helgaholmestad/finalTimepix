@@ -219,8 +219,6 @@ def hough(inputfile,pattern,folder,eventNumber):
         histogramD=  tfile.Get("clusterNumber "+str(k))
         histogram=histogramD.Clone()
         eventNumber=event+1
-        if histogram.GetEntries()<70:
-            continue
         lines=[]
         center=findMassCenter(histogram)
         clusterCharge=findClusterCharge(histogram)
@@ -257,8 +255,8 @@ def hough(inputfile,pattern,folder,eventNumber):
         #printCanvas(histogramCenter,str(sys.argv[2]+"event"+str(event)))
         if error >1.0 and prong>0 and histogramD.GetEntries()>70:
             meta.write("trough"+'\n')
-            printCanvas(hisgogramCenter,str("figures/")+sys.argv[2]+"event"+str(eventNumber))
-            printCluster(histogramD,taggedCluster)
+            #printCanvas(hisgogramCenter,str("figures/")+sys.argv[2]+"event"+str(eventNumber))
+            #printCluster(histogramD,taggedCluster)
         else:
             meta.write("notTrough"+'\n')
     meta.close()

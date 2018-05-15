@@ -3,19 +3,19 @@ TITLE
 * Set the defaults for precision simulations
 DEFAULTS                                                              PRECISIO
 * Define the beam characteristics
-BEAM           -0.35       0.0       0.0       0.0       0.0        1.PION+
+BEAM            -0.2       0.0       0.0       0.0       0.0        1.PION+
 * Define the beam position
 BEAMPOS          0.0       0.0    -2.107       0.0       0.0
 PHYSICS                                                               COALESCE
 PHYSICS           3.                                                  EVAPORAT
-EMFCUT        -1E-06                       BLKBODY  @LASTREG
-EMFCUT        -1E-06                                                  PROD-CUT
+EMFCUT        -1E-06 0.0000001             BLKBODY  @LASTREG
+EMFCUT        -1E-06 0.0000001                                        PROD-CUT
 GEOBEGIN                                                              COMBNAME
     0    0          
 * Void sphere
 SPH void       0.0 0.0 0.0 100.
 SPH blkbody    0.0 0.0 0.0 1000.
-RPP target     -0.704 0.704 -0.704 0.704 1. 1.00392
+RPP target     -0.704 0.704 -0.704 0.704 1. 1.00389
 END
 * Black hole
 BLKBODY      5 +blkbody -void

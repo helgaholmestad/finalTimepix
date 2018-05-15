@@ -15,6 +15,9 @@ from math import fabs
 from math import sqrt
 #list of tracks contains for each event the  a list of the pixels 
 
+toResample=open("toResample.tex",'w')
+
+
 onedstart=-300
 onedstop=300
 onedbin=250
@@ -43,8 +46,8 @@ def processOneEvent(x,y,tx,ty,xm,ym,a):
         estimatex,estimatey=findEstimate(x,y,xm,ym,a)
     if estimatex==None or estimatey==None:
         return None,None
-    #if findDistanceToMassCenter(estimatex,estimatey,xm,ym)>110.0:
-    #    return None,None
+    if findDistanceToMassCenter(estimatex,estimatey,xm,ym)>110.0:
+        return None,None
     residualx=estimatex-tx
     residualy=estimatey-ty
     print residualx,residualy
@@ -86,6 +89,8 @@ for line in open(sys.argv[1],'r'):
                 histo.Fill(rx*55.0,ry*55.0)
                 histo1D.Fill(rx*55.0)
                 histo1D.Fill(ry*55.0)
+                toResample.write(str(abs(rx*55))+"\n")
+                toResample.write(str(abs(ry*55))+"\n")
         xt=float(data[1])
         yt=float(data[2])
         xm=float(data[3])
@@ -116,7 +121,7 @@ residualSimple=np.array(residualSimple)
 residualSimple = residualSimple[np.isfinite(residualSimple)]
 residualSimple.sort()
 print "mass center method"
-print len(residualSimple)/proportion
+print len(residualSimple)/20000.0
 print residualSimple[int(len(residualSimple)*0.68)]
 
 
@@ -133,7 +138,7 @@ can.SetLeftMargin(0.12)
 can.SetRightMargin(0.2)
 can.SetBottomMargin(0.15)
 histo.Draw("colz")
-input()
+
 histo.Scale(1.0/(twodsize*twodsize))
 histo.GetXaxis().SetTitle("Residual [#mum]")
 histo.GetYaxis().SetTitle("Residual [#mum]")
@@ -265,3 +270,5 @@ can1.Print("../../../../timepixArticle/fig/1dfitSimple.pdf")
 # print "estimated sigma", resultsSimple[int(len(resultsSimple)*0.68)]
 # print "estimated sigma 2D", resultsSimple2D[int(len(resultsSimple2D)*0.68)]
 print "totalt antall events",antallEvents
+
+toResample.close()
