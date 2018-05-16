@@ -9,7 +9,11 @@ import re
 pixelList=[]
 distanceT=20.
 distanceR=6.1
-rootdir='../../../data'
+
+if len(sys.argv)==1:
+    rootdir=sys.argv[1]
+else:
+    rootdir='../../../data'
 #clustering algorithm here
 fileS=open("stat",'w')
 def plotClusters(filepath):
