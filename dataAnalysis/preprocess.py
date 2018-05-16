@@ -6,7 +6,11 @@ import os
 import pp
 import time
 
-rootdir="../../../data"
+if len(sys.argv)==2:
+    rootdir=sys.argv[1]
+else:
+    rootdir="../../../data"
+
 def processFile(filename,outputfile):
     from ROOT import TH1D
     pixelList=[]
