@@ -15,7 +15,10 @@ import hough1D
 #rootdir="/home/helga/timepixForwardFull/20160508_Al52_0kV-3kV-4kV-3kV"
 #rootdir="/home/helga/testbeamNewCleaning/sortedData/"
 #rootdir='/home/helga/backgroundData2015'
-rootdir='../../../data/newTimepixFiles'
+if len(sys.argv)==2:
+    rootdir=sys.argv[1]
+else:
+    rootdir='../../../data/newTimepixFiles'
 #clustering algorithm here
 
 
