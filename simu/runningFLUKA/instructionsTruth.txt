@@ -1,0 +1,101 @@
+ compile the user defined input file with the command
+$FLUPRO/flutil/ldpm3qmd -o exe mgdraw-pix.f
+
+Then the fluka simulation can be run with:
+$FLUPRO/flutil/rfluka -e exe -N0 -M1 exam2.inp
+
+
+ Fluka name     Fluka number    Common name      Standard PDG number
+                                                 (Particle Data Group)
+
+ 4-HELIUM (1)       -6          Alpha                   ---
+ 3-HELIUM (1)       -5          Helium-3
+ TRITON   (1)       -4          Triton                  ---
+ DEUTERON (1)       -3          Deuteron                ---
+ HEAVYION (1)       -2          Generic heavy ion (see command HI-PROPE)
+ OPTIPHOT           -1          Optical Photon          ---
+ RAY (2)             0          Pseudoparticle          ---
+ PROTON              1          Proton                  2212
+ APROTON             2          Antiproton             -2212
+ ELECTRON            3          Electron                  11
+ POSITRON            4          Positron                 -11
+ NEUTRIE             5          Electron Neutrino         12
+ ANEUTRIE            6          Electron Antineutrino    -12
+ PHOTON              7          Photon                    22
+ NEUTRON             8          Neutron                 2112
+ ANEUTRON            9          Antineutron            -2112
+ MUON+              10          Positive Muon            -13
+ MUON-              11          Negative Muon             13
+ KAONLONG           12          Kaon-zero long           130
+ PION+              13          Positive Pion            211
+ PION-              14          Negative Pion           -211
+ KAON+              15          Positive Kaon            321
+ KAON-              16          Negative Kaon           -321
+ LAMBDA             17          Lambda                  3122
+ ALAMBDA            18          Antilambda             -3122
+ KAONSHRT           19          Kaon zero short          310
+ SIGMA-             20          Negative Sigma          3112
+ SIGMA+             21          Positive Sigma          3222
+ SIGMAZER           22          Sigma-zero              3212
+ PIZERO             23          Pion-zero                111
+ KAONZERO           24          Kaon-zero                311
+ AKAONZER           25          Antikaon-zero           -311
+ Reserved           26               ---                 ---
+ NEUTRIM            27          Muon neutrino             14
+ ANEUTRIM           28          Muon antineutrino        -14
+ Blank              29               ---                 ---
+ Reserved           30               ---                 ---
+ ASIGMA-            31          Antisigma-minus        -3222
+ ASIGMAZE           32          Antisigma-zero         -3212
+ ASIGMA+            33          Antisigma-plus         -3112
+ XSIZERO            34          Xi-zero                 3322
+ AXSIZERO           35          Antixi-zero            -3322
+ XSI-               36          Negative Xi             3312
+ AXSI+              37          Positive Xi            -3312
+ OMEGA-             38          Omega-minus             3334
+ AOMEGA+            39          Antiomega              -3334
+ Reserved           40               ---                 ---
+ TAU+               41          Positive Tau             -15
+ TAU-               42          Negative Tau              15
+ NEUTRIT            43          Tau neutrino              16
+ ANEUTRIT           44          Tau antineutrino         -16
+ D+                 45          D-plus                   411
+ D-                 46          D-minus                 -411
+ D0                 47          D-zero                   421
+ D0BAR              48          AntiD-zero              -421
+ DS+                49          D_s-plus                 431
+ DS-                50          D_s-minus               -431
+ LAMBDAC+           51          Lambda_c-plus           4122
+ XSIC+              52          Xi_c-plus               4232
+ XSIC0              53          Xi_c-zero               4112
+ XSIPC+             54          Xi'_c-plus              4322
+ XSIPC0             55          Xi'_c-zero              4312
+ OMEGAC0            56          Omega_c-zero            4332
+ ALAMBDC-           57          Antilambda_c-minus     -4122
+ AXSIC-             58          AntiXi_c-minus         -4232
+ AXSIC0             59          AntiXi_c-zero          -4132
+ AXSIPC-            60          AntiXi'_c-minus        -4322
+ AXSIPC0            61          AntiXi'_c-zero         -4312
+ AOMEGAC0           62          AntiOmega_c-zero       -4332
+ Reserved           63               ---                 ---
+ Reserved           64               ---                 ---
+
+ (1) Heavy fragments produced in evaporation are loaded in a special stack
+     (COMMON FHEAVY, contained in the INCLUDE file with the same name).
+     The internal code for heavy evaporation fragments is the following:
+     3 = deuteron, 4 = 3-H, 5 = 3-He, 6 = 4-He, 7-12 = fission fragments.
+     Transport capabilities (dE/dx, with account of effective charge and
+     effective charge straggling, multiple Coulomb scattering, no interaction
+     yet) are now available for d, t, 3-He and 4-He.  Heavier ions can be
+     transported on demand (see option IONTRANS), with or without nuclear
+     interactions. Fission fragments and fragments from Fermi break-up, when
+     produced, are also put in COMMON FHEAVY with id's ranging from 7 to 12
+     (usually 7 and 8 for two fragments).
+
+ (2) A "RAY" is not a real particle, but a straight line trajectory through the
+     FLUKA geometry. When a primary particle (defined by options BEAM and
+     BEAMPOS, or by a SOURCE subroutine) is found to be a RAY, the program
+     tracks through the geometry in the given direction calculating a number of
+     quantities (distance traversed in each material, number of radiation
+     lengths, number of interaction lengths etc.). See 14} for instructions
+     about its use.

@@ -1,0 +1,3 @@
+Command to run fluka
+
+$FLUPRO/flutil/rfluka -N0 -M1 inputfile.inp
