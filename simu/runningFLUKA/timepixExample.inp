@@ -1,0 +1,40 @@
+TITLE
+
+* Set the defaults for precision simulations
+DEFAULTS                                                              PRECISIO
+* Define the beam characteristics
+BEAM          -1E-05       0.0       0.0       1.3       1.3        1.APROTON
+* Define the beam position
+BEAMPOS          0.0       0.0       -2.       0.0       0.0
+PHYSICS                                                               COALESCE
+PHYSICS           3.                                                  EVAPORAT
+EMFCUT        -1E-06 0.0000001             BLKBODY  @LASTREG
+EMFCUT        -1E-06 0.0000001                                        PROD-CUT
+GEOBEGIN                                                              COMBNAME
+    0    0          
+* Void sphere
+SPH void       0.0 0.0 0.0 100.
+SPH blkbody    0.0 0.0 0.0 1000.
+RPP target     -0.704 0.704 -0.704 0.704 1. 1.00005
+RPP target1    -0.704 0.704 -0.704 0.704 1.00005 1.0675
+END
+* Black hole
+BLKBODY      5 +blkbody -void
+* Void around
+VOID         5 +void -target-target1
+* Target
+TARGET       5 target
+* Target
+TARGET1      5 target1
+END
+GEOEND
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7..
+ASSIGNMA    BLCKHOLE   BLKBODY
+ASSIGNMA    ALUMINUM    TARGET
+ASSIGNMA     SILICON   TARGET1
+ASSIGNMA      VACUUM      VOID
+RANDOMIZ          1.        4.
+EVENTBIN        -10.    ENERGY       22.      .704      .704    1.0675
+EVENTBIN       -.704     -.704    1.0001     2560.     2560.        3. &
+START           100.
+STOP

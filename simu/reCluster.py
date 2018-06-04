@@ -11,9 +11,10 @@ random.seed(3)
 histoRaw=TH1D("","",500,0,5000)
 def makeDeadList(i):
     listOfDeadPixels=[]
-    inputfile="/home/helga/newTimepixFiles/20160528_33umAl_D1_0kV_D2_4kV_E1_4kV_E2_3kV_leadblocks/00_20160528_162324/test27_datadriven_AD/"
-    inputfile="/home/helga/TimepixArticle/data/newTimepixFiles/20160528_33umAl_D1_0kV_D2_4kV_E1_4kV_E2_3kV_leadblocks/00_20160528_162324/test27_datadriven_AD/"
-   
+    #inputfile="/home/helga/newTimepixFiles/20160528_33umAl_D1_0kV_D2_4kV_E1_4kV_E2_3kV_leadblocks/00_20160528_162324/test27_datadriven_AD/"
+    #inputfile="/home/helga/TimepixArticle/data/newTimepixFiles/20160528_33umAl_D1_0kV_D2_4kV_E1_4kV_E2_3kV_leadblocks/00_20160528_162324/test27_datadriven_AD/"
+    inputfile="../dataAnalysis/testData/00_20160528_160054/test27_datadriven_AD/"
+
     while os.stat(inputfile+"clustering"+str(i)+".dat").st_size==0:
         print "we are in a while loop"
         i=random.randint(1,25)

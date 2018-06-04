@@ -156,7 +156,7 @@ for line in open(sys.argv[1]):
     if((len(columns)>0 and columns[0]=="Binning")):
         hasStarted=True
         teller+=1
-        print "teller",teller
+        print "event",teller
         name="event"+str(teller)
         pixelNumber=0
         if len(theEvent)!=0: 
