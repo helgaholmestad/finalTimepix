@@ -30,7 +30,7 @@ END
 GEOEND
 * ..+....1....+....2....+....3....+....4....+....5....+....6....+....7..
 ASSIGNMA    BLCKHOLE   BLKBODY
-ASSIGNMA      CARBON    TARGET
+ASSIGNMA     SILICON    TARGET
 ASSIGNMA        GOLD   TARGET1
 ASSIGNMA      VACUUM      VOID
 RANDOMIZ          1.        4.
