@@ -229,7 +229,7 @@ for k in tfile.GetListOfKeys():
     meta.write("error "+str(error)+"\n")
     if prong>2 and histogramD.GetEntries()>100:
         couldGoWrongClusters+=1
-    if error >1.0 and prong>0 and center[1]>800:
+    if error >1.0 and prong>0 and histogramD.GetEntries()>70:
         meta.write("trough"+'\n')
     else:
         meta.write("notTrough"+'\n')

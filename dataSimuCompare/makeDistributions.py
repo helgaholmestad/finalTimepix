@@ -192,7 +192,7 @@ combiProngTagged=TH1D("","",5,-0.5,4.5)
 combiSizeTagged=TH1D("","",10,0,400)
 combiTotalChargeTagged=TH1D("","",18,0,35000)
 
-sizeCut=60
+sizeCut=70
 prongCut=1
 centerEnergyCut=1000
 energy=0
