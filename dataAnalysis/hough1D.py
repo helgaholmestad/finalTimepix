@@ -238,6 +238,7 @@ def hough(inputfile,pattern,folder,eventNumber):
             prongLenghts.append(lengthOfProng)
             pixelsLeft=histogramD.GetEntries()-pixelsInLine
             lines.append(addLine(max,center[0][0],center[0][1]))
+            del accumulator
             accumulator=newAccumulator(center[0][0],center[0][1],histogram)
             prong=prong+1
         #print ("size",histogramD.GetEntries())
@@ -259,6 +260,7 @@ def hough(inputfile,pattern,folder,eventNumber):
             #printCluster(histogramD,taggedCluster)
         else:
             meta.write("notTrough"+'\n')
+        del accumulator
     meta.close()
     return eventNumber
 #if __name__ == '__main__':

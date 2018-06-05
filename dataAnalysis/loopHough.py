@@ -23,7 +23,6 @@ else:
 
 
 def findPurity(pattern):
-    print "Hei"
     pattern=str(pattern)
     if os.path.isfile(str("datafiles/"+pattern+"sumOfSquares.txt")):
         os.remove(str("datafiles/"+pattern+"sumOfSquares.txt"))
@@ -40,10 +39,8 @@ def findPurity(pattern):
             continue
         for file in files:
             if os.path.isfile(subdir+"/"+file) and "histograms" in file and ".root" in file and "test27" in subdir and not "~" in file:
-                print "er vi her"
                 eventNumber=hough1D.hough(str(subdir+"/"+file),pattern,"datafiles",eventNumber)
          
-print "HEI!!"
 findPurity(sys.argv[1])
 
 #findPurity("20160702_33umAl_D1_0kV_D2_3kV_E1_3kV_E2_3kV")

@@ -57,7 +57,6 @@ def findMassCenter(histogram):
         averagex=x*histogram.GetBinContent(x,y)
         averagey=y*histogram.GetBinContent(x,y)
         theSum=histogram.GetBinContent(x,y)
-        print "the sum",theSum
         for i in range(1,radius,1):
             for j in range(1,radius,1):        
                 if i*j<radius*radius:
@@ -164,25 +163,27 @@ def removeLine(centerx,centery,maxTheta,histogram):
                     if j-centery <0:
                         theta=-theta
                     if abs(theta-maxTheta)<(20.0/180)*np.pi:
+                        prongs.write(pixelInfo)
                         histogram.SetBinContent(i,j,0)
                         numberOfRemovedPixels=numberOfRemovedPixels+1
                     if abs(theta)> 3.0 and abs(maxTheta)>3.0:
+                        prongs.write(pixelInfo)
                         histogram.SetBinContent(i,j,0)
                         numberOfRemovedPixels=numberOfRemovedPixels+1
+    prongs.write("pixelsInProng  "+str(numberOfRemovedPixels)+"\n")
     return histogram,numberOfRemovedPixels
 
 
 if os.path.isfile(sys.argv[2]):
     os.remove(sys.argv[2])
-meta=open(sys.argv[2],'w')
+meta=open(sys.argv[2]+".txt",'w')
+prongs=open(sys.argv[2]+"prong.txt",'w')
 
 tfile = TFile.Open(sys.argv[1],'READ')
 event=2
-print "number of keys",sys.argv[1],len(tfile.GetListOfKeys())
 
 teller=0
 numberNone=0
-print "list of keys"
 for test in tfile.GetListOfKeys():
     tfile.Get(test)
 for k in tfile.GetListOfKeys():
@@ -190,9 +191,9 @@ for k in tfile.GetListOfKeys():
         continue
     teller+=1
     histogramD=k.ReadObj()
-    if histogramD==None or histogramD.GetEntries()<10:
+    if histogramD==None:
+        prongs.write("new cluster\n")
         numberNone+=1
-        print "none"
         continue
     if histogramD.GetEntries()==0:
         continue
@@ -205,6 +206,8 @@ for k in tfile.GetListOfKeys():
     ratio=findRatio(center[0][0],center[0][1],histogramCenter)
     accumulator=newAccumulator(center[0][0],center[0][1],histogram)
     prong=0
+    prongs.write("new cluster\n")
+    prongs.write("center "+str(center[0][0])+"  "+str(center[0][1])+"\n")
     while True:
         maxBin=accumulator.GetMaximumBin()
         #can=TCanvas()
@@ -216,6 +219,7 @@ for k in tfile.GetListOfKeys():
         histogram,pixelsInLine=removeLine(center[0][0],center[0][1],max,histogram)
         pixelsLeft=histogramD.GetEntries()-pixelsInLine
         lines.append(addLine(max,center[0][0],center[0][1]))
+        del accumulator
         accumulator=newAccumulator(center[0][0],center[0][1],histogram)
         prong=prong+1
     if histogramD.GetEntries()>10:
@@ -227,6 +231,8 @@ for k in tfile.GetListOfKeys():
     meta.write("prong "+str(prong)+"\n")
     meta.write("clusterCharge "+str(clusterCharge) +"\n")
     meta.write("error "+str(error)+"\n")
+    prongs.write("numberOfProngs "+str(prong)+"\n")
+    prongs.write("done"+'\n')
     if prong>2 and histogramD.GetEntries()>100:
         couldGoWrongClusters+=1
     if error >1.0 and prong>0 and histogramD.GetEntries()>70:
@@ -235,15 +241,10 @@ for k in tfile.GetListOfKeys():
         meta.write("notTrough"+'\n')
     event +=1
     title=histogramD.GetTitle()
-    print "hva er title",title
     clusterNumber=title.split("cluster")[0].split("event")[1]
     meta.write("clusterNumber "+str(clusterNumber)+"\n")
+    del accumulator
     
-    
-print "antall none",numberNone
-print "antall som kan ga galt",couldGoWrongClusters
-
-
 
 
 

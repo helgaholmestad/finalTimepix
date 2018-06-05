@@ -14,11 +14,8 @@ def makeDeadList(i):
     #inputfile="/home/helga/newTimepixFiles/20160528_33umAl_D1_0kV_D2_4kV_E1_4kV_E2_3kV_leadblocks/00_20160528_162324/test27_datadriven_AD/"
     #inputfile="/home/helga/TimepixArticle/data/newTimepixFiles/20160528_33umAl_D1_0kV_D2_4kV_E1_4kV_E2_3kV_leadblocks/00_20160528_162324/test27_datadriven_AD/"
     inputfile="../dataAnalysis/testData/00_20160528_160054/test27_datadriven_AD/"
-
-    while os.stat(inputfile+"clustering"+str(i)+".dat").st_size==0:
-        print "we are in a while loop"
+    while os.path.isfile(inputfile+"clustering"+str(i)+".dat")==False or os.stat(inputfile+"clustering"+str(i)+".dat").st_size==0:
         i=random.randint(1,25)
-        print "random number",i
     infile= open(inputfile+"clustering"+str(i)+".dat",'r')
     firstLine=infile.readline()
     modeTime=float(firstLine.split()[2])
@@ -76,11 +73,8 @@ for line in open("datafiles/"+sys.argv[1]+"results.txt","r"):
     if columns[0]=="new":
         file.write("event\n")
         event+=1
-        print "new"
         while True:
-            print "in while"
             ranNumb=random.randint(1,25)
-            print "find random",ranNumb
             listOfDeadPixels=makeDeadList(ranNumb)
             if len(listOfDeadPixels)>1000:
                 break
@@ -105,7 +99,6 @@ for line in open("datafiles/"+sys.argv[1]+"newresults.txt","r"):
     if columns[0]=="event":
         teller+=1
         cluster=0
-        print "event",teller
     elif columns[0]=="cluster":
         cluster+=1
         if finalWithCut.GetEntries()>10:
@@ -115,8 +108,6 @@ for line in open("datafiles/"+sys.argv[1]+"newresults.txt","r"):
     else:
         finalWithCut.Fill(int(columns[0]),int(columns[1]),float(columns[2]))
 myFile.Write()
-
-print event
 
 # canvas=TCanvas()
 # histoRaw.GetXaxis().SetTitle("energy deposited in pixel [keV]")
