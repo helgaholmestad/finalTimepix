@@ -10,14 +10,13 @@ pixelList=[]
 distanceT=20.
 distanceR=6.1
 
-if len(sys.argv)==1:
+if len(sys.argv)==2:
     rootdir=sys.argv[1]
 else:
     rootdir='../../../data'
 #clustering algorithm here
 fileS=open("stat",'w')
 def plotClusters(filepath):
-    print "filepath",filepath
     histogram=TH2D("clusterNumber1","clusterNumber1",256,0,256,256,0,256)
     histogramTotal=TH2D("total","total",256,0,256,256,0,256)
     histogramTime=TH1D("default","default",1,0,1)
@@ -32,7 +31,6 @@ def plotClusters(filepath):
     fileS.write("new\n")
     print "working with file ",filepath
     for line in open(filepath):
-        print line
         columns = line.split()
         if columns[0]=="new":
             if hasStarted==False:
@@ -46,14 +44,13 @@ def plotClusters(filepath):
                 if delay>1000:
                     histogram.SetTitle("delayed "+str(delay))
                     histogram.Write()
-                    print " er vi her"
                     clusterNumber=clusterNumber+1
+            del histogram
             totalTime=0
             numberOfPixels=0
             #modeTime=float(columns[2])
             histogram=TH2D("clusterNumber "+str(clusterNumber),"clusterNumber ",256,0,256,256,0,256)
         else:
-            print "er vi her da"
             numberOfPixels=numberOfPixels+1
             totalTime=float(columns[3])+totalTime
             histogram.Fill(int(columns[0]),int(columns[1]),float(columns[2]))
@@ -63,6 +60,8 @@ def plotClusters(filepath):
     histogramTotal.Write()
     histogramTime.Write()
     del histogramTime
+    del histogramTotal
+    del histogram
     myFile.Write()
 
             
