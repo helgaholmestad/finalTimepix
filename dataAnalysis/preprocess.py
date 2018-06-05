@@ -3,7 +3,6 @@ gROOT.Reset()
 import numpy
 import sys
 import os
-import pp
 import time
 
 if len(sys.argv)==2:
