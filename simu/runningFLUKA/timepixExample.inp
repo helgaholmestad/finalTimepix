@@ -36,5 +36,6 @@ ASSIGNMA      VACUUM      VOID
 RANDOMIZ          1.        4.
 EVENTBIN        -10.    ENERGY       22.      .704      .704    1.0675
 EVENTBIN       -.704     -.704    1.0001     2560.     2560.        3. &
+USERDUMP        100.  
 START           100.
 STOP
