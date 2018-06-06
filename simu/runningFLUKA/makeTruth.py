@@ -25,9 +25,7 @@ def readOneFile(file):
     global eventNumber
     foundFirst=False
     variables=[]
-    print file
     for L in open(file,"r"):
-        print L
         l=  L.strip().split()
         if L.startswith(' --t--'):
             if l[1]=="begin":
@@ -37,8 +35,8 @@ def readOneFile(file):
                 if(len(variables) ==0):
                     continue
                 if variables[0]==2.0 and foundFirst==False:
-                    print "depth",(1.0-variables[6])*10000
-                    print variables
+                    #print "depth",(1.0-variables[6])*10000
+                    #print variables
                     #outfile.write(str(eventNumber)+" "+str(variables[1])+"  "+str(variables[3])+ "\n")
                     outfile.write(str(eventNumber)+" "+str((variables[3]+0.704)/1.408*256+0.5)+"  "+str((variables[1]+0.704)/1.408*256+0.5)+ "\n")
                     foundFirst=True
